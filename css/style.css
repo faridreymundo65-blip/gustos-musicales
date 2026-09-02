@@ -1,14 +1,14 @@
 :root {
-  --bg: #0f0e17;
-  --bg-alt: #16151f;
-  --card: #1c1b29;
-  --text: #fffffe;
-  --text-muted: #a7a9be;
-  --primary: #ff8906;
-  --secondary: #f25f4c;
-  --accent: #e53170;
-  --purple: #7f5af0;
-  --border: #2a2938;
+  --bg: #07060a;
+  --bg-alt: #0e0c14;
+  --card: #16121f;
+  --text: #f5f0e8;
+  --text-muted: #9c93a8;
+  --primary: #d4af37;
+  --secondary: #8a1538;
+  --accent: #e0115f;
+  --purple: #4b1d8f;
+  --border: #2a2338;
   --radius: 16px;
   --font-heading: 'Poppins', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -124,7 +124,7 @@ img {
   text-align: center;
   padding: 4rem 1.5rem;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 20%, #251f38 0%, var(--bg) 60%);
+  background: radial-gradient(circle at 50% 20%, #1c0e28 0%, var(--bg) 60%);
 }
 
 .hero-content {
@@ -177,7 +177,7 @@ img {
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(229, 49, 112, 0.35);
+  box-shadow: 0 10px 25px rgba(224, 17, 95, 0.35);
 }
 
 .btn-outline {
