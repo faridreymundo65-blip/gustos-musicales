@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gustos Musicales</title>
+  <meta name="description" content="Descubre géneros musicales, artistas y encuentra tu gusto musical con nuestro test interactivo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <nav class="navbar">
+      <a href="#inicio" class="logo">🎵 Gustos<span>Musicales</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#generos">Géneros</a></li>
+        <li><a href="#test">Test</a></li>
+        <li><a href="#artistas">Artistas</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <div class="hero-content">
+        <h1>¿Cuál es tu <span class="highlight">gusto musical</span>?</h1>
+        <p>Explora géneros, descubre artistas y encuentra la banda sonora que mejor te representa.</p>
+        <div class="hero-actions">
+          <a href="#test" class="btn btn-primary">Hacer el test</a>
+          <a href="#generos" class="btn btn-outline">Ver géneros</a>
+        </div>
+      </div>
+      <div class="hero-bars" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </section>
+
+    <section id="generos" class="section">
+      <div class="section-title">
+        <h2>Géneros musicales</h2>
+        <p>Un vistazo a los sonidos que mueven al mundo</p>
+      </div>
+      <div class="genre-grid" id="genreGrid"></div>
+    </section>
+
+    <section id="test" class="section test-section">
+      <div class="section-title">
+        <h2>Descubre tu gusto musical</h2>
+        <p>Responde 5 preguntas rápidas y te diremos qué género va contigo</p>
+      </div>
+
+      <div class="quiz-card" id="quizCard">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar" id="quizProgress"></div>
+        </div>
+
+        <div id="quizQuestion" class="quiz-question"></div>
+
+        <div id="quizResult" class="quiz-result hidden">
+          <h3>Tu gusto musical es...</h3>
+          <p class="result-genre" id="resultGenre"></p>
+          <p class="result-desc" id="resultDesc"></p>
+          <button class="btn btn-primary" id="restartQuiz">Volver a intentar</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="artistas" class="section">
+      <div class="section-title">
+        <h2>Artistas destacados</h2>
+        <p>Selecciona un género para ver artistas representativos</p>
+      </div>
+      <div class="artist-filters" id="artistFilters"></div>
+      <div class="artist-grid" id="artistGrid"></div>
+    </section>
+
+    <section id="contacto" class="section contact-section">
+      <div class="section-title">
+        <h2>Comparte tu gusto musical</h2>
+        <p>Cuéntanos qué escuchas y por qué te gusta</p>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <input type="text" id="name" placeholder="Tu nombre" required />
+          <input type="email" id="email" placeholder="Tu correo" required />
+        </div>
+        <select id="favGenre">
+          <option value="">Elige tu género favorito</option>
+        </select>
+        <textarea id="message" rows="4" placeholder="¿Qué te gusta de este género?"></textarea>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+        <p class="form-feedback hidden" id="formFeedback">¡Gracias por compartir tu gusto musical! 🎶</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Gustos Musicales. Hecho con 🎧 para los amantes de la música.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
