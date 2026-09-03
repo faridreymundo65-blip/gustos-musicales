@@ -136,3 +136,77 @@ Salida final: carga de 900 kg en 3 cajas, 1 caja rechazada, 100 kg sin usar.
 
 La diferencia clave: la caja de 200 kg que el algoritmo original habría perdido
 al cortar el proceso, aquí sí se carga.
+
+---
+
+## Implementación en Python
+
+| Archivo | Contenido |
+|---------|-----------|
+| `carga_montacargas.py`    | Traducción directa del pseudocódigo original |
+| `carga_montacargas_v2.py` | Versión corregida, con validación de entrada |
+
+Ejecución:
+
+```bash
+python3 algoritmos/carga_montacargas.py
+python3 algoritmos/carga_montacargas_v2.py
+```
+
+### Un problema que solo aparece en Python
+
+En el pseudocódigo, `Leer peso` es una operación abstracta que siempre
+funciona. En Python no:
+
+```python
+peso = float(input("Ingrese peso de la caja (kg): "))
+```
+
+Esta línea **termina el programa con un error** si el usuario escribe algo que
+no es un número (`ValueError: could not convert string to float`) o si se
+cierra la entrada con Ctrl+D (`EOFError`). El resumen final nunca se imprime y
+se pierde el conteo de la carga.
+
+La versión 2 lo resuelve aislando la lectura en una función que insiste hasta
+recibir un valor válido:
+
+```python
+def leer_peso(disponible):
+    while True:
+        try:
+            texto = input(f"Peso de la caja en kg (0 para terminar) [libre: {disponible} kg]: ")
+        except EOFError:
+            print("\nEntrada cerrada. Se cierra la carga.")
+            return 0
+        try:
+            peso = float(texto)
+        except ValueError:
+            print("Entrada inválida: escriba un número, por ejemplo 12.5")
+            continue
+        if peso < 0:
+            print("Peso inválido: debe ser un número positivo.")
+            continue
+        return peso
+```
+
+### Prueba de ejecución
+
+Entrada: `300, 400, abc, -50, 500, 200, 0`
+
+```
+=== Control de carga (capacidad: 1000 kg) ===
+[libre: 1000 kg]: Caja aceptada. Total: 300.0 kg
+[libre: 700.0 kg]: Caja aceptada. Total: 700.0 kg
+[libre: 300.0 kg]: Entrada inválida: escriba un número, por ejemplo 12.5
+[libre: 300.0 kg]: Peso inválido: debe ser un número positivo.
+[libre: 300.0 kg]: ¡ALERTA! Excede capacidad por 200.0 kg. Caja rechazada.
+                   Puede intentar con una caja de hasta 300.0 kg.
+[libre: 300.0 kg]: Caja aceptada. Total: 900.0 kg
+[libre: 100.0 kg]: --- Resumen de la carga ---
+Carga total: 900.0 kg en 3 cajas.
+Cajas rechazadas: 1
+Capacidad sin usar: 100.0 kg
+```
+
+Las tres entradas problemáticas (`abc`, `-50`, `500`) se manejan sin cortar el
+proceso, y la caja de 200 kg alcanza a cargarse.
