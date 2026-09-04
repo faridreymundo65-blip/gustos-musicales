@@ -1,0 +1,107 @@
+:root {
+  --void: #05070f;
+  --earth-a: #2f7fd4;
+  --earth-b: #1b4f8a;
+  --land: #3f9e6a;
+  --moon-a: #e6e3da;
+  --moon-b: #9d9a92;
+  --path: rgba(190, 205, 235, 0.22);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--void);
+  background-image:
+    radial-gradient(1.6px 1.6px at 12% 22%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 78% 14%, #dbe6ff, transparent),
+    radial-gradient(1.2px 1.2px at 34% 78%, #fff, transparent),
+    radial-gradient(1.8px 1.8px at 88% 66%, #cfe0ff, transparent),
+    radial-gradient(1.2px 1.2px at 58% 40%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 20% 60%, #e8efff, transparent),
+    radial-gradient(circle at 50% 50%, #0d1426, var(--void) 70%);
+}
+
+.space {
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+
+.space::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 420px;
+  height: 420px;
+  transform: translate(-50%, -50%);
+  border: 1px dashed var(--path);
+  border-radius: 50%;
+}
+
+.earth {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: var(--earth-a);
+  background-image:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.35), transparent 45%),
+    radial-gradient(ellipse at 62% 62%, var(--land), transparent 55%),
+    linear-gradient(145deg, var(--earth-a), var(--earth-b));
+  box-shadow:
+    inset -10px -8px 22px rgba(0, 0, 0, 0.55),
+    0 0 38px rgba(47, 127, 212, 0.35);
+}
+
+.orbit {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  animation: orbit 5s linear infinite;
+}
+
+.moon {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background-color: var(--moon-a);
+  background-image:
+    radial-gradient(circle at 35% 30%, #fff, transparent 50%),
+    linear-gradient(150deg, var(--moon-a), var(--moon-b));
+  box-shadow:
+    inset -5px -3px 10px rgba(0, 0, 0, 0.45),
+    0 0 16px rgba(230, 227, 218, 0.4);
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translate(-50%, -50%);
+  }
+  100% {
+    transform: rotate(360deg) translate(-50%, -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit {
+    animation-duration: 30s;
+  }
+}
