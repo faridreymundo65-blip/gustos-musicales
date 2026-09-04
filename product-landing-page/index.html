@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadencia C1 — Grabadora de campo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header id="header">
+    <a class="brand" href="#hero">
+      <img id="header-img"
+        src="https://cdn.freecodecamp.org/testable-projects-fcc/images/product-landing-page-logo.png"
+        alt="Logotipo de Cadencia">
+      <span class="wordmark">Cadencia</span>
+    </a>
+    <nav id="nav-bar">
+      <a class="nav-link" href="#features">Características</a>
+      <a class="nav-link" href="#demo">Demo</a>
+      <a class="nav-link" href="#pricing">Precios</a>
+      <a class="nav-link" href="#signup">Reservar</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero">
+      <p class="eyebrow">Nuevo · Envíos en octubre</p>
+      <h1>Graba el sonido de un sitio antes de que cambie</h1>
+      <p class="lede">
+        La C1 cabe en un bolsillo, aguanta catorce horas y no te obliga a mirar
+        una pantalla para saber si está funcionando. Un dial, dos micrófonos y
+        una luz que solo se pone roja cuando algo va mal.
+      </p>
+      <a class="cta" href="#signup">Reservar la mía</a>
+    </section>
+
+    <section id="features">
+      <h2>Lo que la hace distinta</h2>
+      <div class="feature-grid">
+        <article class="feature">
+          <h3>Catorce horas reales</h3>
+          <p>
+            Medidas grabando en 24 bits con los dos micrófonos abiertos, no en
+            reposo. Se carga por USB-C en cuarenta minutos.
+          </p>
+        </article>
+        <article class="feature">
+          <h3>Un solo dial</h3>
+          <p>
+            Ganancia a la izquierda, monitorización a la derecha. Sin menús
+            anidados ni combinaciones de botones que memorizar.
+          </p>
+        </article>
+        <article class="feature">
+          <h3>Archivos que se abren solos</h3>
+          <p>
+            WAV sin comprimir con marcas de tiempo y ubicación en los metadatos.
+            Se monta como una unidad USB corriente.
+          </p>
+        </article>
+        <article class="feature">
+          <h3>Aguanta el campo</h3>
+          <p>
+            Cuerpo de aluminio mecanizado, resistente a salpicaduras y a caídas
+            de metro y medio sobre superficie dura.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="demo">
+      <h2>Escúchala en tres minutos</h2>
+      <p class="section-lede">
+        Grabado en un mercado a las seis de la mañana, sin postproducción ni
+        reducción de ruido.
+      </p>
+      <div class="video-frame">
+        <iframe id="video" src="https://www.youtube.com/embed/y8Yv4pnO7qc"
+          title="Demostración de la grabadora Cadencia C1" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2>Elige tu equipo</h2>
+      <div class="price-grid">
+        <article class="plan">
+          <h3>C1 Sola</h3>
+          <p class="price">S/ 890</p>
+          <ul>
+            <li>Grabadora y cable USB-C</li>
+            <li>Tarjeta de 64 GB incluida</li>
+            <li>Dos años de garantía</li>
+          </ul>
+          <a class="plan-cta" href="#signup">Reservar</a>
+        </article>
+        <article class="plan featured">
+          <p class="badge">La más pedida</p>
+          <h3>C1 Campo</h3>
+          <p class="price">S/ 1.240</p>
+          <ul>
+            <li>Todo lo del paquete anterior</li>
+            <li>Paravientos de pelo y pinza</li>
+            <li>Funda rígida y correa</li>
+          </ul>
+          <a class="plan-cta" href="#signup">Reservar</a>
+        </article>
+        <article class="plan">
+          <h3>C1 Estudio</h3>
+          <p class="price">S/ 1.690</p>
+          <ul>
+            <li>Todo lo del paquete Campo</li>
+            <li>Par de micrófonos externos</li>
+            <li>Trípode de mesa y cables XLR</li>
+          </ul>
+          <a class="plan-cta" href="#signup">Reservar</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="signup">
+      <h2>Reserva sin pagar nada hoy</h2>
+      <p class="section-lede">
+        Te escribimos cuando abra el primer lote. Un correo, y solo ese.
+      </p>
+      <form id="form" action="https://www.freecodecamp.org/email-submit">
+        <label class="visually-hidden" for="email">Correo electrónico</label>
+        <input id="email" type="email" name="email" placeholder="tu@correo.com" required>
+        <input id="submit" type="submit" value="Avísame">
+      </form>
+      <p class="fineprint">Sin spam. Puedes darte de baja desde cualquier correo.</p>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <p>Cadencia Instrumentos &middot; Lima</p>
+    <nav class="footer-links">
+      <a href="#features">Características</a>
+      <a href="#pricing">Precios</a>
+      <a href="#signup">Reservar</a>
+    </nav>
+  </footer>
+</body>
+
+</html>

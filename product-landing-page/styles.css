@@ -1,0 +1,383 @@
+:root {
+  --bg: #14110f;
+  --surface: #1d1917;
+  --surface-2: #26211d;
+  --line: #363029;
+  --text: #f2ece4;
+  --muted: #a59a8c;
+  --accent: #e8913a;
+  --sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding-top: 74px;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* --- Cabecera fija --- */
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 74px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  background-color: rgba(20, 17, 15, 0.94);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+#header-img {
+  height: 34px;
+  width: auto;
+}
+
+.wordmark {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+#nav-bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2.5vw, 2rem);
+}
+
+.nav-link {
+  padding: 0.4rem 0;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+/* --- Secciones --- */
+section {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 2rem);
+  scroll-margin-top: 90px;
+}
+
+section h2 {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.section-lede {
+  max-width: 52ch;
+  margin: 0 0 2.5rem;
+  color: var(--muted);
+}
+
+/* --- Portada --- */
+#hero {
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+  margin: 0 0 0.8rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+#hero h1 {
+  max-width: 18ch;
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.4rem, 6.5vw, 4.2rem);
+}
+
+.lede {
+  max-width: 56ch;
+  margin: 0 0 2rem;
+  font-size: 1.1rem;
+  color: var(--muted);
+}
+
+.cta {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  background-color: var(--accent);
+  color: #14110f;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 150ms ease;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+}
+
+/* --- Características --- */
+.feature-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.feature {
+  flex: 1 1 15rem;
+  padding: 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background-color: var(--surface);
+}
+
+.feature h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.feature p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* --- Vídeo --- */
+.video-frame {
+  position: relative;
+  padding-top: 56.25%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: var(--surface);
+}
+
+#video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* --- Precios --- */
+.price-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  align-items: stretch;
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 16rem;
+  padding: 1.8rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background-color: var(--surface);
+}
+
+.plan.featured {
+  border-color: var(--accent);
+  background-color: var(--surface-2);
+}
+
+.badge {
+  margin: 0 0 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.plan h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.25rem;
+}
+
+.price {
+  margin: 0 0 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.plan ul {
+  flex: 1;
+  margin: 0 0 1.5rem;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.plan li {
+  margin-bottom: 0.4rem;
+}
+
+.plan-cta {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.plan-cta:hover {
+  background-color: var(--accent);
+  color: #14110f;
+}
+
+/* --- Formulario --- */
+#signup {
+  text-align: center;
+}
+
+#signup .section-lede {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+#email {
+  flex: 1 1 16rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background-color: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+#email::placeholder {
+  color: #7d7365;
+}
+
+#email:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+#submit {
+  padding: 0.85rem 2rem;
+  border: 0;
+  border-radius: 999px;
+  background-color: var(--accent);
+  color: #14110f;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fineprint {
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* --- Pie --- */
+#footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 4vw, 2rem) 3rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.footer-links a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+}
+
+/* --- Responsive --- */
+@media (max-width: 620px) {
+  #header {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+  }
+
+  body {
+    padding-top: 108px;
+  }
+
+  #nav-bar {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+
+  .nav-link {
+    font-size: 0.85rem;
+  }
+
+  #hero h1 {
+    max-width: none;
+  }
+}
