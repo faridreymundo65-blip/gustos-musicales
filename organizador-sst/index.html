@@ -1,0 +1,427 @@
+<title>Peligro, Riesgo y Daño</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#E9E7E1;
+    --panel:#FFFFFF;
+    --panel-2:#F3F1EA;
+    --ink:#191B1F;
+    --ink-2:#4A4C47;
+    --ink-3:#7C7D76;
+    --line:#CFCCC2;
+    --line-strong:#191B1F;
+    --warn:#F5C400;
+    --warn-ink:#191B1F;
+    --danger:#C8102E;
+    --duty:#005EB8;
+    --safe:#00843D;
+    --shadow:0 1px 0 rgba(25,27,31,.06);
+    --maxw:1080px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#131519;
+      --panel:#1B1E23;
+      --panel-2:#22262C;
+      --ink:#ECEAE4;
+      --ink-2:#B4B3AC;
+      --ink-3:#8A8983;
+      --line:#31353C;
+      --line-strong:#4A4F58;
+      --warn:#F5C400;
+      --warn-ink:#131519;
+      --danger:#F0435C;
+      --duty:#5AA2EA;
+      --safe:#3FB877;
+      --shadow:0 1px 0 rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#131519;
+    --panel:#1B1E23;
+    --panel-2:#22262C;
+    --ink:#ECEAE4;
+    --ink-2:#B4B3AC;
+    --ink-3:#8A8983;
+    --line:#31353C;
+    --line-strong:#4A4F58;
+    --warn:#F5C400;
+    --warn-ink:#131519;
+    --danger:#F0435C;
+    --duty:#5AA2EA;
+    --safe:#3FB877;
+    --shadow:0 1px 0 rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:var(--maxw);margin:0 auto;padding:0 24px 56px}
+
+  /* ---- franja de peligro (negro/amarillo, ISO) ---- */
+  .stripe{
+    height:14px;
+    background:repeating-linear-gradient(135deg,var(--warn) 0 18px,var(--ink) 18px 36px);
+  }
+  /* ---- encabezado ---- */
+  header.head{padding:30px 0 22px;border-bottom:2px solid var(--line-strong)}
+  .eyebrow{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);
+  }
+  h1{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;
+    font-weight:700;font-size:clamp(46px,9vw,88px);line-height:.92;
+    letter-spacing:.005em;text-transform:uppercase;text-wrap:balance;
+    margin:10px 0 0;
+  }
+  h1 .sep{color:var(--warn)}
+  .deck{margin:12px 0 0;max-width:60ch;color:var(--ink-2);font-size:16px}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.06em;
+  }
+  .meta span{
+    border:1px solid var(--line);border-radius:2px;padding:4px 8px;color:var(--ink-2);
+    text-transform:uppercase;
+  }
+
+  /* ---- secciones ---- */
+  section{padding:40px 0 0}
+  .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:24px}
+  .req{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;
+    background:var(--warn);color:var(--warn-ink);padding:4px 8px;border-radius:2px;white-space:nowrap;
+  }
+  h2{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;
+    font-weight:600;font-size:30px;line-height:1;letter-spacing:.02em;text-transform:uppercase;margin:0;
+  }
+  .sec-note{margin-left:auto;font-size:12px;color:var(--ink-3);text-align:right}
+
+  /* ---- bloque 1: cadena peligro > riesgo > daño ---- */
+  .chain{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:stretch;gap:0}
+  .link{
+    background:var(--panel);border:1px solid var(--line);border-top:5px solid var(--c);
+    padding:18px 18px 20px;box-shadow:var(--shadow);
+  }
+  .link.p{--c:var(--ink-3)}
+  .link.r{--c:var(--warn)}
+  .link.d{--c:var(--danger)}
+  .link h3{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:28px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.03em;margin:0;line-height:1;color:var(--c);
+  }
+  .link.p h3{color:var(--ink)}
+  .def{font-size:13.5px;color:var(--ink-2);margin:8px 0 0;min-height:66px}
+  .caseline{
+    margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-3);
+  }
+  .case{margin:6px 0 0;font-size:14px;font-weight:500}
+  .arrow{display:flex;align-items:center;justify-content:center}
+  .arrow svg{width:26px;height:26px}
+
+  .example-strip{
+    margin-top:16px;background:var(--panel-2);border:1px solid var(--line);border-left:4px solid var(--duty);
+    padding:14px 16px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+  }
+  .example-strip p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:62ch}
+  .example-strip b{color:var(--ink)}
+  .formula{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;font-weight:600;
+    white-space:nowrap;color:var(--ink);
+  }
+  .formula i{font-style:normal;color:var(--ink-3)}
+  .formula .out{background:var(--danger);color:#fff;padding:3px 7px;border-radius:2px}
+
+  /* ---- bloque 2: 5 categorías ---- */
+  .cats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  .cat{
+    background:var(--panel);border:1px solid var(--line);padding:16px 14px 18px;
+    display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow);
+  }
+  .badge{width:62px;height:56px;display:block}
+  .cat h3{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:23px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.03em;margin:0;line-height:1;
+  }
+  .cat .what{font-size:12.5px;color:var(--ink-2);margin:0}
+  .cat .ex{
+    margin:auto 0 0;padding-top:11px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink);
+  }
+  .cat .ex span{
+    display:block;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.5px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;
+  }
+  .cat .ex b{font-weight:600}
+  .measure{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:var(--danger);font-weight:600;
+  }
+
+  /* ---- bloque 3: flujo 3 pasos ---- */
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);background:var(--panel)}
+  .step{padding:20px 20px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+  .step:last-child{border-right:0}
+  .step-n{display:flex;align-items:baseline;gap:10px}
+  .num{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:38px;font-weight:700;line-height:.8;
+    color:var(--duty);
+  }
+  .step h3{
+    font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:24px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.03em;margin:0;line-height:1;
+  }
+  .step ul{margin:0;padding-left:16px;font-size:13px;color:var(--ink-2);display:flex;flex-direction:column;gap:5px}
+  .step li::marker{color:var(--duty)}
+  .no{
+    margin-top:auto;font-size:12px;background:var(--panel-2);border-left:3px solid var(--danger);
+    padding:8px 10px;color:var(--ink-2);
+  }
+  .no b{color:var(--danger);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;display:block}
+
+  .hierarchy{
+    margin-top:16px;display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);overflow:hidden;
+  }
+  .hierarchy div{
+    flex:1 1 0;min-width:130px;padding:9px 10px;font-size:11.5px;border-right:1px solid var(--line);
+    background:var(--panel);
+  }
+  .hierarchy div:last-child{border-right:0}
+  .hierarchy b{
+    display:block;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-3);margin-bottom:3px;
+  }
+  .hier-label{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-3);margin:20px 0 0;
+  }
+
+  footer{
+    margin-top:44px;padding-top:16px;border-top:2px solid var(--line-strong);
+    display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
+    font-size:11.5px;color:var(--ink-3);
+  }
+  footer p{margin:0;max-width:58ch}
+
+  @media (max-width:900px){
+    .chain{grid-template-columns:1fr}
+    .arrow{transform:rotate(90deg);height:34px}
+    .cats{grid-template-columns:repeat(2,1fr)}
+    .flow{grid-template-columns:1fr}
+    .step{border-right:0;border-bottom:1px solid var(--line)}
+    .def{min-height:0}
+  }
+
+  @media print{
+    :root{--ground:#fff;--panel:#fff;--panel-2:#F3F1EA;--ink:#191B1F;--ink-2:#4A4C47;--ink-3:#6E6F69;--line:#CFCCC2;--line-strong:#191B1F;--danger:#C8102E;--duty:#005EB8;--safe:#00843D;--shadow:none}
+    body{background:#fff}
+    section{break-inside:avoid}
+    .sheet{padding-bottom:24px}
+  }
+</style>
+
+<div class="stripe" aria-hidden="true"></div>
+
+<div class="sheet">
+  <header class="head">
+    <p class="eyebrow">Seguridad y Salud en el Trabajo · Organizador gráfico</p>
+    <h1>Peligro <span class="sep">/</span> Riesgo <span class="sep">/</span> Daño</h1>
+    <p class="deck">Tres conceptos que suelen usarse como sinónimos y no lo son. Distinguirlos es lo que permite actuar <em>antes</em> de que alguien se lesione: el peligro se elimina, el riesgo se controla, el daño ya solo se atiende.</p>
+    <div class="meta">
+      <span>Actividad 3 · Individual</span>
+      <span>Base: ISO 45001:2018</span>
+      <span>Formato: infografía</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <span class="req">Requisito 1</span>
+      <h2>Diferenciación conceptual</h2>
+      <p class="sec-note">Un mismo escenario, tres lecturas distintas</p>
+    </div>
+
+    <div class="chain">
+      <article class="link p">
+        <h3>Peligro</h3>
+        <p class="def">Fuente, situación o acto con <b>potencial</b> de causar daño. Existe aunque nadie esté expuesto: es una condición, no un suceso.</p>
+        <p class="caseline">En el caso</p>
+        <p class="case">Derrame de agua sin señalizar en el pasillo de despacho de bodega.</p>
+      </article>
+
+      <div class="arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 12h16"/><path d="M14 6l6 6-6 6"/></svg>
+      </div>
+
+      <article class="link r">
+        <h3>Riesgo</h3>
+        <p class="def">Combinación de la <b>probabilidad</b> de que ocurra el suceso y la <b>severidad</b> de sus consecuencias. Se mide y se valora; aparece cuando hay exposición.</p>
+        <p class="caseline">En el caso</p>
+        <p class="case">18 operarios cruzan el pasillo por turno cargando cajas: alta probabilidad de resbalón y caída al mismo nivel.</p>
+      </article>
+
+      <div class="arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 12h16"/><path d="M14 6l6 6-6 6"/></svg>
+      </div>
+
+      <article class="link d">
+        <h3>Daño</h3>
+        <p class="def">Consecuencia <b>ya materializada</b> sobre la persona, el equipo o el proceso. Es el resultado del riesgo no controlado.</p>
+        <p class="caseline">En el caso</p>
+        <p class="case">Fractura de muñeca izquierda, 21 días de incapacidad y reproceso del despacho.</p>
+      </article>
+    </div>
+
+    <div class="example-strip">
+      <p><b>Cómo leerlo:</b> el piso mojado (peligro) no lesiona a nadie por sí solo; lesiona cuando hay gente expuesta (riesgo) y termina en una caída real (daño). Por eso el control se aplica sobre el peligro y la exposición, nunca sobre el daño.</p>
+      <p class="formula">Probabilidad <i>ALTA</i> × Severidad <i>MODERADA</i> = <span class="out">Riesgo alto</span></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="req">Requisito 2</span>
+      <h2>Clasificación de peligros</h2>
+      <p class="sec-note">5 categorías · 1 ejemplo real por categoría</p>
+    </div>
+
+    <div class="cats">
+      <article class="cat">
+        <svg class="badge" viewBox="0 0 70 62" role="img" aria-label="Señal de advertencia: peligro físico">
+          <path d="M35 4 L67 58 H3 Z" fill="#F5C400" stroke="#191B1F" stroke-width="3.5" stroke-linejoin="round"/>
+          <g fill="none" stroke="#191B1F" stroke-width="3" stroke-linecap="round">
+            <path d="M28 42a11 11 0 0 1 0-14"/><path d="M21 47a18 18 0 0 1 0-24"/>
+            <path d="M42 28a11 11 0 0 1 0 14"/><path d="M49 23a18 18 0 0 1 0 24"/>
+          </g>
+          <circle cx="35" cy="35" r="3.5" fill="#191B1F"/>
+        </svg>
+        <h3>Físicos</h3>
+        <p class="what">Energías del entorno que actúan sobre el cuerpo: ruido, vibración, temperatura, iluminación, radiación.</p>
+        <p class="ex"><span>Ejemplo</span>Ruido continuo de <b>92 dB(A)</b> en la sala de compresores durante toda la jornada.<br><b class="measure">Límite: 85 dB(A) / 8 h</b></p>
+      </article>
+
+      <article class="cat">
+        <svg class="badge" viewBox="0 0 70 62" role="img" aria-label="Señal de advertencia: peligro químico">
+          <path d="M35 4 L67 58 H3 Z" fill="#F5C400" stroke="#191B1F" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M30 22v10L21 47a4 4 0 0 0 3.5 6h21a4 4 0 0 0 3.5-6l-9-15V22z" fill="none" stroke="#191B1F" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M27 20h16" stroke="#191B1F" stroke-width="3" stroke-linecap="round"/>
+          <path d="M25.5 41h19l4.5 6a4 4 0 0 1-3.5 6h-21a4 4 0 0 1-3.5-6z" fill="#191B1F"/>
+        </svg>
+        <h3>Químicos</h3>
+        <p class="what">Sustancias que ingresan por vía respiratoria, dérmica o digestiva: polvos, humos, vapores, gases.</p>
+        <p class="ex"><span>Ejemplo</span>Vapores de <b>tolueno</b> al limpiar piezas en un banco sin extracción localizada.<br><b class="measure">Pictograma GHS08 · Ficha SDS</b></p>
+      </article>
+
+      <article class="cat">
+        <svg class="badge" viewBox="0 0 70 62" role="img" aria-label="Señal de advertencia: peligro mecánico">
+          <path d="M35 4 L67 58 H3 Z" fill="#F5C400" stroke="#191B1F" stroke-width="3.5" stroke-linejoin="round"/>
+          <circle cx="30" cy="38" r="9" fill="none" stroke="#191B1F" stroke-width="3"/>
+          <g stroke="#191B1F" stroke-width="3" stroke-linecap="round">
+            <path d="M30 25v-4"/><path d="M30 55v-4"/><path d="M17 38h-4"/><path d="M47 38h-4"/>
+            <path d="M21 29l-3-3"/><path d="M39 47l3 3"/><path d="M39 29l3-3"/><path d="M21 47l-3 3"/>
+          </g>
+          <path d="M46 20l10 12-6 1 4 9" fill="none" stroke="#191B1F" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+        <h3>Mecánicos</h3>
+        <p class="what">Contacto con partes móviles, herramientas, cargas suspendidas o superficies cortantes.</p>
+        <p class="ex"><span>Ejemplo</span>Sierra circular de banco operando con la <b>guarda de disco retirada</b>.<br><b class="measure">Riesgo: amputación de dedos</b></p>
+      </article>
+
+      <article class="cat">
+        <svg class="badge" viewBox="0 0 70 62" role="img" aria-label="Señal de advertencia: peligro eléctrico">
+          <path d="M35 4 L67 58 H3 Z" fill="#F5C400" stroke="#191B1F" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M40 18 L24 40h10l-4 16 18-24H37z" fill="#191B1F"/>
+        </svg>
+        <h3>Eléctricos</h3>
+        <p class="what">Contacto directo o indirecto con energía eléctrica, arco eléctrico y estática.</p>
+        <p class="ex"><span>Ejemplo</span>Tablero de distribución <b>sin tapa</b>, con borneras vivas a 220 V al alcance de la mano.<br><b class="measure">Falta bloqueo LOTO</b></p>
+      </article>
+
+      <article class="cat">
+        <svg class="badge" viewBox="0 0 70 62" role="img" aria-label="Señal de advertencia: peligro ergonómico">
+          <path d="M35 4 L67 58 H3 Z" fill="#F5C400" stroke="#191B1F" stroke-width="3.5" stroke-linejoin="round"/>
+          <circle cx="30" cy="24" r="4.5" fill="#191B1F"/>
+          <path d="M24 33c4-3 10-3 14 0" fill="none" stroke="#191B1F" stroke-width="3" stroke-linecap="round"/>
+          <path d="M26 33l-3 12" fill="none" stroke="#191B1F" stroke-width="3" stroke-linecap="round"/>
+          <path d="M23 45l6 9" fill="none" stroke="#191B1F" stroke-width="3" stroke-linecap="round"/>
+          <path d="M38 33l6 6" fill="none" stroke="#191B1F" stroke-width="3" stroke-linecap="round"/>
+          <rect x="40" y="39" width="14" height="11" fill="none" stroke="#191B1F" stroke-width="3"/>
+        </svg>
+        <h3>Ergonómicos</h3>
+        <p class="what">Exigencias de la tarea sobre el cuerpo: carga física, posturas forzadas, repetitividad, diseño del puesto.</p>
+        <p class="ex"><span>Ejemplo</span>Levantamiento manual de bultos de <b>25 kg</b> desde el piso, 60 veces por turno.<br><b class="measure">Lumbalgia por sobreesfuerzo</b></p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="req">Requisito 3</span>
+      <h2>Caso de campo: observación del puesto</h2>
+      <p class="sec-note">Flujo de 3 pasos, en este orden</p>
+    </div>
+
+    <div class="flow">
+      <article class="step">
+        <div class="step-n"><span class="num">1</span><h3>Prepara y observa</h3></div>
+        <ul>
+          <li>Avisa al trabajador por qué estás ahí: se observa la tarea, no a la persona.</li>
+          <li>Ubícate fuera de la línea de fuego y sin interrumpir el ciclo.</li>
+          <li>Mira el <b>ciclo completo</b> de la tarea, no un instante suelto.</li>
+          <li>Registra qué ves: entorno, equipo, postura, EPP, procedimiento.</li>
+        </ul>
+        <p class="no"><b>Evita</b>Llegar sin avisar y con la libreta en la mano: el trabajador cambia su forma de trabajar y observas una tarea que no existe.</p>
+      </article>
+
+      <article class="step">
+        <div class="step-n"><span class="num">2</span><h3>Dialoga y valora</h3></div>
+        <ul>
+          <li>Pregunta <b>por qué</b> se hace así: casi siempre hay una causa de proceso detrás.</li>
+          <li>Separa lo observado: ¿esto es peligro, riesgo o daño ya ocurrido?</li>
+          <li>Clasifica el peligro en su categoría (físico, químico, mecánico, eléctrico, ergonómico).</li>
+          <li>Valora probabilidad × severidad y prioriza lo crítico.</li>
+        </ul>
+        <p class="no"><b>Evita</b>Corregir en tono de sanción. Si la observación se vive como castigo, la próxima condición insegura no te la reportan.</p>
+      </article>
+
+      <article class="step">
+        <div class="step-n"><span class="num">3</span><h3>Acuerda y registra</h3></div>
+        <ul>
+          <li>Define el control por <b>jerarquía</b>, no por lo más barato.</li>
+          <li>Acuerda la acción con el trabajador y su supervisor.</li>
+          <li>Deja responsable y fecha de cierre en el formato de observación.</li>
+          <li>Verifica en terreno que el control quedó operando.</li>
+        </ul>
+        <p class="no"><b>Evita</b>Cerrar la observación con "se le recomendó tener cuidado": eso no es un control, es una nota sin responsable ni fecha.</p>
+      </article>
+    </div>
+
+    <p class="hier-label">Jerarquía de controles aplicada en el paso 3 — de mayor a menor eficacia</p>
+    <div class="hierarchy">
+      <div><b>1 · Eliminar</b>Retirar el peligro del puesto.</div>
+      <div><b>2 · Sustituir</b>Cambiarlo por algo menos peligroso.</div>
+      <div><b>3 · Ingeniería</b>Guardas, extracción, aislamiento.</div>
+      <div><b>4 · Administrativo</b>Procedimiento, rotación, señalización.</div>
+      <div><b>5 · EPP</b>Última barrera, nunca la primera.</div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Definiciones de peligro y riesgo alineadas a <b>ISO 45001:2018</b>; colores y geometría de las señales según <b>ISO 3864-1</b> (triángulo amarillo con borde negro = advertencia).</p>
+    <p>Actividad 3 · Organizador gráfico didáctico · Entrega individual</p>
+  </footer>
+</div>
+
+<div class="stripe" aria-hidden="true"></div>
