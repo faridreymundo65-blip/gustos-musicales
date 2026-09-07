@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Arrastra las caratulas de tus juegos a tu setup y encuentra jugadores con gustos parecidos para jugar juntos.">
+<title>Lobby Abierto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --ground:#120B1A;
+  --ground-2:#170F21;
+  --panel:#1B1226;
+  --panel-2:#221631;
+  --raised:#2A1B3B;
+  --line:#332246;
+  --line-soft:#291B39;
+  --text:#F2EAF5;
+  --muted:#A294B3;
+  --dim:#7A6B8C;
+  --coral:#FF4D5E;
+  --coral-deep:#B62E3E;
+  --butter:#FFCE5C;
+  --mint:#59E3A7;
+  --violet:#9A6BFF;
+  --r-sm:6px; --r-md:12px; --r-lg:20px;
+  --shelf:#0D0813;
+  --shadow:0 18px 40px -18px rgba(0,0,0,.85);
+  --fd:'Chakra Petch',ui-sans-serif,system-ui,sans-serif;
+  --fb:'Manrope',ui-sans-serif,system-ui,sans-serif;
+  --fm:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(900px 420px at 15% -8%, rgba(154,107,255,.16), transparent 62%),
+    radial-gradient(760px 380px at 96% 4%, rgba(255,77,94,.13), transparent 60%),
+    var(--ground);
+  color:var(--text);
+  font-family:var(--fb);
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--fd);margin:0;text-wrap:balance;letter-spacing:-.01em;line-height:1.12}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--butter)}
+:focus-visible{outline:2px solid var(--butter);outline-offset:2px;border-radius:4px}
+::selection{background:var(--coral);color:#fff}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+/* ---------- HUD ---------- */
+.hud{
+  position:sticky;top:0;z-index:40;
+  background:rgba(18,11,26,.86);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-soft);
+}
+.hud-in{display:flex;align-items:center;gap:16px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--fd);font-weight:700;font-size:17px;letter-spacing:.02em}
+.brand .cab{width:26px;height:26px;flex:none}
+.brand em{font-style:normal;color:var(--coral)}
+.hud-nav{display:flex;gap:4px;margin-left:auto}
+.hud-nav a{
+  color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;
+  padding:7px 11px;border-radius:999px;
+}
+.hud-nav a:hover{color:var(--text);background:var(--panel-2)}
+.status{
+  display:flex;align-items:center;gap:8px;flex:none;
+  font-family:var(--fm);font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex:none}
+.status.live .dot{background:var(--mint);box-shadow:0 0 0 0 rgba(89,227,167,.6);animation:ping 2.2s infinite}
+.status.live{color:var(--mint);border-color:rgba(89,227,167,.32)}
+@keyframes ping{70%{box-shadow:0 0 0 7px rgba(89,227,167,0)}100%{box-shadow:0 0 0 0 rgba(89,227,167,0)}}
+
+/* ---------- intro ---------- */
+.intro{padding:52px 0 34px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:44px;align-items:end}
+.eyebrow{
+  font-family:var(--fm);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--coral);margin-bottom:14px;
+}
+.intro h1{font-size:clamp(34px,5.2vw,58px);font-weight:700}
+.intro h1 em{font-style:normal;color:var(--butter)}
+.intro p.lead{margin-top:16px;color:var(--muted);font-size:17px;max-width:56ch}
+.counters{display:flex;gap:10px;flex-wrap:wrap}
+.counter{
+  flex:1 1 130px;background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r-md);
+  padding:14px 16px;
+}
+.counter b{display:block;font-family:var(--fm);font-size:26px;font-weight:700;color:var(--butter);font-variant-numeric:tabular-nums;line-height:1.1}
+.counter span{display:block;font-size:12px;color:var(--dim);margin-top:3px;letter-spacing:.02em}
+
+/* ---------- sections ---------- */
+section{scroll-margin-top:76px}
+.sec-head{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;margin-bottom:18px}
+.sec-head h2{font-size:26px;font-weight:700}
+.sec-head p{color:var(--muted);font-size:14px;max-width:62ch}
+.sec-head .spacer{flex:1}
+.hairline{height:1px;background:linear-gradient(90deg,var(--line),transparent);margin:0 0 26px}
+
+/* ---------- board ---------- */
+.board-section{padding-bottom:20px}
+.board-scroll{overflow-x:auto;overflow-y:hidden;border-radius:var(--r-lg);-webkit-overflow-scrolling:touch}
+.board{
+  position:relative;min-width:860px;height:620px;transition:height .22s cubic-bezier(.2,.8,.3,1);
+  background:
+    linear-gradient(180deg,rgba(154,107,255,.07),transparent 42%),
+    repeating-linear-gradient(0deg,transparent 0 27px,rgba(255,255,255,.014) 27px 28px),
+    var(--shelf);
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  overflow:hidden;touch-action:none;
+}
+.zone{
+  position:absolute;left:16px;right:16px;top:16px;height:176px;
+  border:1.5px dashed rgba(255,206,92,.34);border-radius:var(--r-md);
+  background:linear-gradient(180deg,rgba(255,206,92,.07),rgba(255,206,92,.02));
+  transition:background .18s,border-color .18s;
+}
+.zone.hot{border-color:var(--butter);background:linear-gradient(180deg,rgba(255,206,92,.16),rgba(255,206,92,.05))}
+.zone-tag{
+  position:absolute;top:10px;left:14px;display:flex;align-items:center;gap:9px;
+  font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--butter);
+}
+.zone-tag span{color:var(--dim);letter-spacing:.04em;text-transform:none;font-weight:500}
+.shelf-tag{
+  position:absolute;left:20px;top:206px;
+  font-family:var(--fm);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+}
+.shelf-rail{position:absolute;left:16px;right:16px;top:228px;height:1px;background:var(--line-soft)}
+
+/* covers */
+.cover{
+  position:absolute;width:84px;height:112px;border-radius:9px;
+  border:0;padding:0;background:transparent;cursor:grab;
+  transition:transform .16s cubic-bezier(.2,.8,.3,1),box-shadow .16s,left .22s cubic-bezier(.2,.8,.3,1),top .22s cubic-bezier(.2,.8,.3,1);
+  filter:drop-shadow(0 10px 16px rgba(0,0,0,.6));
+  touch-action:none;
+}
+.cover:hover{transform:translateY(-5px) scale(1.035);z-index:5}
+.cover:active{cursor:grabbing}
+.cover.dragging{transition:none;z-index:30;cursor:grabbing;transform:scale(1.07) rotate(-1.4deg)}
+.cover svg{display:block;width:100%;height:100%;border-radius:9px}
+.cover .rank{
+  position:absolute;top:-8px;left:-8px;width:24px;height:24px;border-radius:50%;
+  background:var(--butter);color:#221200;
+  font-family:var(--fm);font-size:12px;font-weight:700;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(0,0,0,.5);
+}
+.cover.picked .rank{display:flex}
+.cover.picked svg{box-shadow:0 0 0 2px var(--butter)}
+.cover.bump{animation:bump .4s}
+@keyframes bump{0%,100%{transform:none}30%{transform:translateX(-7px) rotate(-3deg)}65%{transform:translateX(5px) rotate(2deg)}}
+
+.board-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+.readout{
+  flex:1 1 340px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font-family:var(--fm);font-size:12.5px;color:var(--muted);
+}
+.readout b{color:var(--text);font-weight:700}
+.pick-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:4px 11px 4px 5px;color:var(--text);
+}
+.pick-chip i{
+  width:19px;height:19px;border-radius:50%;background:var(--butter);color:#221200;
+  font-style:normal;font-size:10.5px;font-weight:700;display:grid;place-items:center;
+}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--line);background:var(--panel-2);color:var(--text);
+  padding:9px 16px;border-radius:999px;cursor:pointer;
+  font-size:13.5px;font-weight:600;
+  transition:background .15s,border-color .15s,transform .1s;
+}
+.btn:hover{background:var(--raised);border-color:var(--violet)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--coral);border-color:var(--coral);color:#fff}
+.btn-primary:hover{background:#ff6472;border-color:#ff6472}
+.btn-ghost{background:transparent}
+.btn-sm{padding:6px 12px;font-size:12.5px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* ---------- profile ---------- */
+.profile{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:14px;
+  background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:20px;
+}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{
+  font-family:var(--fm);font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+}
+.field input,.field select{
+  background:var(--ground-2);border:1px solid var(--line);border-radius:var(--r-sm);
+  padding:10px 11px;font-size:14px;width:100%;
+}
+.field input:focus,.field select:focus{border-color:var(--violet);outline:none}
+.field .hint{font-size:11.5px;color:var(--dim)}
+.switch{display:flex;align-items:center;gap:9px;padding-top:6px;cursor:pointer;font-size:14px}
+.switch input{width:16px;height:16px;accent-color:var(--coral)}
+.profile-actions{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line-soft);padding-top:16px}
+.save-note{font-family:var(--fm);font-size:12px;color:var(--dim)}
+.save-note.ok{color:var(--mint)}
+
+/* ---------- filters ---------- */
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+.filters select,.filters input{
+  background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:13px;
+}
+.filters .chk{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);cursor:pointer}
+.filters .chk input{accent-color:var(--mint);width:15px;height:15px}
+
+/* ---------- match cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:16px}
+.pcard{
+  display:flex;flex-direction:column;gap:13px;
+  background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:18px;
+  position:relative;
+}
+.pcard.top{border-color:rgba(255,206,92,.4);background:linear-gradient(180deg,rgba(255,206,92,.06),var(--panel) 46%)}
+.pcard-head{display:flex;align-items:center;gap:14px}
+.ring{width:60px;height:60px;flex:none;position:relative}
+.ring svg{display:block;transform:rotate(-90deg)}
+.ring b{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--fm);font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text);
+}
+.pcard h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pcard .meta{font-size:12.5px;color:var(--dim);margin-top:2px}
+.tag{
+  font-family:var(--fm);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 7px;border-radius:4px;border:1px solid var(--line);color:var(--dim);
+}
+.tag.on{color:var(--mint);border-color:rgba(89,227,167,.4);background:rgba(89,227,167,.08)}
+.tag.ex{color:var(--violet);border-color:rgba(154,107,255,.4);background:rgba(154,107,255,.08)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:11.5px;color:var(--muted);background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.shared{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mini{width:30px;height:40px;border-radius:4px;flex:none}
+.mini svg{display:block;width:100%;height:100%;border-radius:4px}
+.mini.faded{opacity:.24;filter:grayscale(1)}
+.why{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line-soft);padding-top:11px}
+.why b{color:var(--butter);font-family:var(--fm);font-weight:700}
+.pcard-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:auto}
+.pcard-actions select{background:var(--ground-2);border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:12.5px;max-width:150px}
+.empty{
+  border:1px dashed var(--line);border-radius:var(--r-lg);padding:26px;color:var(--muted);
+  font-size:14px;text-align:center;grid-column:1/-1;
+}
+.empty b{color:var(--text);display:block;font-family:var(--fd);font-size:16px;margin-bottom:6px}
+
+/* ---------- lobby ---------- */
+.lobby{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:18px}
+.panel h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.panel h3 .count{font-family:var(--fm);font-size:11px;color:var(--dim);font-weight:500}
+.compose{display:flex;gap:9px;margin-bottom:14px}
+.compose input{flex:1;min-width:0;background:var(--ground-2);border:1px solid var(--line);border-radius:999px;padding:10px 15px;font-size:13.5px}
+.compose input:focus{border-color:var(--coral);outline:none}
+.feed{display:flex;flex-direction:column;gap:2px;max-height:330px;overflow-y:auto}
+.msg{display:flex;gap:11px;padding:10px 0;border-bottom:1px solid var(--line-soft)}
+.msg:last-child{border-bottom:0}
+.av{width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;font-family:var(--fd);font-weight:700;font-size:13px;color:#1a1020}
+.msg-body{min-width:0;flex:1}
+.msg-body .who{font-size:13px;font-weight:700;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.msg-body .when{font-family:var(--fm);font-size:10.5px;color:var(--dim);font-weight:500}
+.msg-body p{font-size:13.5px;color:var(--muted);word-break:break-word}
+.online-list{display:flex;flex-direction:column;gap:9px}
+.online-row{display:flex;align-items:center;gap:10px;font-size:13.5px}
+.online-row .dot{background:var(--mint)}
+.online-row .me{font-family:var(--fm);font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
+.invite{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  border:1px solid rgba(255,206,92,.34);background:rgba(255,206,92,.06);
+  border-radius:var(--r-md);padding:11px 13px;font-size:13px;margin-bottom:9px;
+}
+.invite .grow{flex:1;min-width:140px}
+.muted{color:var(--dim);font-size:13px}
+
+/* ---------- toasts ---------- */
+.toasts{position:fixed;right:18px;bottom:18px;z-index:80;display:flex;flex-direction:column;gap:9px;max-width:330px}
+.toast{
+  background:var(--raised);border:1px solid var(--line);border-left:3px solid var(--coral);
+  border-radius:var(--r-md);padding:12px 15px;font-size:13.5px;box-shadow:var(--shadow);
+  animation:slide .28s cubic-bezier(.2,.8,.3,1);
+}
+.toast.good{border-left-color:var(--mint)}
+.toast.warn{border-left-color:var(--butter)}
+@keyframes slide{from{opacity:0;transform:translateX(22px)}}
+
+footer{
+  margin-top:56px;border-top:1px solid var(--line-soft);padding:26px 0 40px;
+  color:var(--dim);font-size:12.5px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;
+}
+footer .fm{font-family:var(--fm)}
+
+@media (max-width:900px){
+  .intro{grid-template-columns:1fr;gap:26px;padding-top:38px}
+  .lobby{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<header class="hud">
+  <div class="wrap hud-in">
+    <div class="brand">
+      <svg class="cab" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="2.5" y="3" width="19" height="14" rx="3" fill="#FF4D5E"/>
+        <rect x="5.5" y="6" width="13" height="7" rx="1.5" fill="#120B1A"/>
+        <circle cx="9" cy="9.5" r="1.4" fill="#FFCE5C"/>
+        <rect x="12" y="8.5" width="5" height="2" rx="1" fill="#59E3A7"/>
+        <rect x="8" y="19" width="8" height="2.4" rx="1.2" fill="#9A6BFF"/>
+      </svg>
+      Lobby<em>Abierto</em>
+    </div>
+    <nav class="hud-nav">
+      <a href="#mesa">Mi setup</a>
+      <a href="#perfil">Perfil</a>
+      <a href="#coincidencias">Coincidencias</a>
+      <a href="#lobby">Lobby</a>
+    </nav>
+    <div class="status" id="status"><span class="dot"></span><span id="statusText">Modo local</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="intro">
+    <div>
+      <p class="eyebrow">Encuentra con quién jugar</p>
+      <h1>Arrastra los juegos que <em>de verdad</em> juegas.</h1>
+      <p class="lead">Tu setup son hasta cinco carátulas ordenadas de izquierda a derecha: la primera es la que más juegas. Con ese orden, tu plataforma y tu horario, el lobby calcula qué tanto coincides con cada jugador y te deja invitarlo a una partida.</p>
+    </div>
+    <div class="counters">
+      <div class="counter"><b id="cSetup">0</b><span>juegos en tu setup</span></div>
+      <div class="counter"><b id="cPlayers">0</b><span>jugadores en el lobby</span></div>
+      <div class="counter"><b id="cBest">—</b><span>mejor afinidad</span></div>
+    </div>
+  </section>
+
+  <section id="mesa" class="board-section">
+    <div class="sec-head">
+      <div>
+        <h2>La mesa</h2>
+        <p>Arrastra una carátula al recuadro dorado para añadirla. Muévela a la izquierda para subirla de puesto. En móvil, tócala para añadirla o quitarla.</p>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost btn-sm" id="btnClear" type="button">Vaciar setup</button>
+    </div>
+    <div class="board-scroll">
+      <div class="board" id="board">
+        <div class="zone" id="zone">
+          <div class="zone-tag">Mi setup <span>· máximo 5 · izquierda = favorito</span></div>
+        </div>
+        <div class="shelf-tag">Estantería</div>
+        <div class="shelf-rail"></div>
+      </div>
+    </div>
+    <div class="board-foot">
+      <div class="readout" id="readout"></div>
+    </div>
+  </section>
+
+  <div class="hairline" style="margin-top:34px"></div>
+
+  <section id="perfil">
+    <div class="sec-head">
+      <div>
+        <h2>Tu ficha</h2>
+        <p>Solo esto se comparte con los demás jugadores del lobby. No pidas ni publiques datos personales aquí.</p>
+      </div>
+    </div>
+    <div class="profile">
+      <div class="field">
+        <label for="fNick">Nick</label>
+        <input id="fNick" maxlength="22" placeholder="Tu nombre en el juego" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="fPlat">Plataforma</label>
+        <select id="fPlat">
+          <option>PC</option><option>Consola</option><option>Móvil</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fHorario">Horario habitual</label>
+        <select id="fHorario">
+          <option value="manana">Mañana · 6–12</option>
+          <option value="tarde">Tarde · 12–19</option>
+          <option value="noche" selected>Noche · 19–24</option>
+          <option value="madrugada">Madrugada · 0–6</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fRegion">Región</label>
+        <select id="fRegion">
+          <option>LAS · Perú</option><option>LAS · Chile</option><option>LAS · Argentina</option>
+          <option>LAN · México</option><option>NA</option><option>EU</option><option>Otra</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fRango">Nivel</label>
+        <select id="fRango">
+          <option>Casual</option><option>Intermedio</option><option>Competitivo</option><option>Ranked serio</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fMic">Voz</label>
+        <label class="switch" for="fMic"><input type="checkbox" id="fMic" checked> Juego con micrófono</label>
+      </div>
+      <div class="profile-actions">
+        <button class="btn btn-primary" id="btnSave" type="button">Publicar mi ficha</button>
+        <span class="save-note" id="saveNote">Se guarda en este navegador. Cuando el lobby está conectado, también se publica para los demás.</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="hairline" style="margin-top:34px"></div>
+
+  <section id="coincidencias">
+    <div class="sec-head">
+      <div>
+        <h2>Coincidencias</h2>
+        <p>Afinidad = 60 pts por juegos compartidos según tu orden, 15 por plataforma, 15 por horario y 10 por región.</p>
+      </div>
+    </div>
+    <div class="filters">
+      <select id="fltGame"><option value="">Cualquier juego</option></select>
+      <select id="fltPlat"><option value="">Cualquier plataforma</option><option>PC</option><option>Consola</option><option>Móvil</option></select>
+      <select id="fltHora">
+        <option value="">Cualquier horario</option>
+        <option value="manana">Mañana</option><option value="tarde">Tarde</option>
+        <option value="noche">Noche</option><option value="madrugada">Madrugada</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="fltMic"> Solo con micrófono</label>
+      <label class="chk"><input type="checkbox" id="fltOn"> Solo en línea ahora</label>
+    </div>
+    <h3 style="font-size:13px;letter-spacing:.13em;text-transform:uppercase;font-family:var(--fm);color:var(--dim);margin-bottom:12px">Jugadores del lobby</h3>
+    <div class="grid" id="gridReal"></div>
+    <h3 style="font-size:13px;letter-spacing:.13em;text-transform:uppercase;font-family:var(--fm);color:var(--dim);margin:30px 0 12px">Perfiles de ejemplo <span style="text-transform:none;letter-spacing:0;color:var(--dim);font-weight:500">— vienen con la página para que veas cómo se ve, no son personas reales</span></h3>
+    <div class="grid" id="gridDemo"></div>
+  </section>
+
+  <div class="hairline" style="margin-top:34px"></div>
+
+  <section id="lobby">
+    <div class="sec-head">
+      <div>
+        <h2>Lobby</h2>
+        <p>Publica qué estás buscando y responde a las invitaciones que te lleguen.</p>
+      </div>
+    </div>
+    <div class="lobby">
+      <div class="panel">
+        <h3>Muro <span class="count" id="wallCount"></span></h3>
+        <form class="compose" id="wallForm">
+          <input id="wallInput" maxlength="140" placeholder="Busco dúo para ranked, 9pm…" autocomplete="off">
+          <button class="btn btn-primary btn-sm" type="submit">Publicar</button>
+        </form>
+        <div class="feed" id="wallFeed"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="panel">
+          <h3>Invitaciones <span class="count" id="invCount"></span></h3>
+          <div id="invList"></div>
+        </div>
+        <div class="panel">
+          <h3>En línea ahora <span class="count" id="onCount"></span></h3>
+          <div class="online-list" id="onList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="fm">Lobby Abierto</span>
+    <span>Los perfiles y mensajes los escriben otras personas: trátalos como lo que son, texto de desconocidos.</span>
+  </footer>
+</main>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================ datos ============================ */
+
+var GAMES = [
+  {id:'valorant',  name:'Valorant',        tag:'Shooter táctico', plats:['PC'],                     art:'chevron',  c1:'#FF4655', c2:'#3E1620'},
+  {id:'lol',       name:'League of Legends',tag:'MOBA',           plats:['PC'],                     art:'orb',      c1:'#C8AA6E', c2:'#0F2E3B'},
+  {id:'freefire',  name:'Free Fire',       tag:'Battle royale',   plats:['Móvil'],                  art:'flame',    c1:'#FF9A2E', c2:'#43190C'},
+  {id:'fortnite',  name:'Fortnite',        tag:'Battle royale',   plats:['PC','Consola','Móvil'],   art:'storm',    c1:'#7B5CFF', c2:'#191640'},
+  {id:'minecraft', name:'Minecraft',       tag:'Sandbox',         plats:['PC','Consola','Móvil'],   art:'blocks',   c1:'#6ECB63', c2:'#18261A'},
+  {id:'gta',       name:'GTA Online',      tag:'Mundo abierto',   plats:['PC','Consola'],           art:'city',     c1:'#3FC1A0', c2:'#0E2024'},
+  {id:'cs2',       name:'Counter-Strike 2',tag:'Shooter',         plats:['PC'],                     art:'crosshair',c1:'#F0A500', c2:'#241E0D'},
+  {id:'dota',      name:'Dota 2',          tag:'MOBA',            plats:['PC'],                     art:'blades',   c1:'#E04A3F', c2:'#24110F'},
+  {id:'amongus',   name:'Among Us',        tag:'Deducción',       plats:['PC','Móvil','Consola'],   art:'capsule',  c1:'#FF5C5C', c2:'#1D1730'},
+  {id:'rocket',    name:'Rocket League',   tag:'Deportes',        plats:['PC','Consola'],           art:'ball',     c1:'#3FA9FF', c2:'#0E1930'},
+  {id:'eafc',      name:'EA FC 25',        tag:'Fútbol',          plats:['Consola','PC'],           art:'pitch',    c1:'#4BE38B', c2:'#0B2318'},
+  {id:'warzone',   name:'Warzone',         tag:'Battle royale',   plats:['PC','Consola'],           art:'crosshair',c1:'#9AA65B', c2:'#1D2010'},
+  {id:'roblox',    name:'Roblox',          tag:'Sandbox',         plats:['PC','Móvil','Consola'],   art:'pixel',    c1:'#E8483F', c2:'#241211'},
+  {id:'eldenring', name:'Elden Ring',      tag:'Souls / RPG',     plats:['PC','Consola'],           art:'ring',     c1:'#D9B96A', c2:'#1D1B0D'},
+  {id:'apex',      name:'Apex Legends',    tag:'Hero shooter',    plats:['PC','Consola'],           art:'triangle', c1:'#FF5A3C', c2:'#26110D'},
+  {id:'mlbb',      name:'Mobile Legends',  tag:'MOBA móvil',      plats:['Móvil'],                  art:'orb',      c1:'#5AC8FA', c2:'#0F1E2E'},
+  {id:'clash',     name:'Clash Royale',    tag:'Estrategia',      plats:['Móvil'],                  art:'crown',    c1:'#FFC943', c2:'#241C0D'},
+  {id:'stardew',   name:'Stardew Valley',  tag:'Simulación',      plats:['PC','Consola','Móvil'],   art:'blocks',   c1:'#8FD14F', c2:'#1A2413'}
+];
+var GMAP = {}; GAMES.forEach(function(g){ GMAP[g.id] = g; });
+
+var HORAS = {manana:'Mañana', tarde:'Tarde', noche:'Noche', madrugada:'Madrugada'};
+var ORDEN_HORA = ['manana','tarde','noche','madrugada'];
+
+var EJEMPLOS = [
+  {id:'ej-kira',  nick:'KiraTV',     plat:'PC',      horario:'noche',     region:'LAS · Perú',      mic:true,  rango:'Competitivo', top:['valorant','cs2','apex','minecraft'],        nota:'Busco dúo para ranked sin tilteo.'},
+  {id:'ej-mateo', nick:'MateoGG',    plat:'Consola', horario:'tarde',     region:'LAS · Perú',      mic:true,  rango:'Casual',      top:['eafc','rocket','gta'],                      nota:'Pichanguitas de FC después del insti.'},
+  {id:'ej-luna',  nick:'lunaqx',     plat:'Móvil',   horario:'noche',     region:'LAS · Perú',      mic:false, rango:'Intermedio',  top:['freefire','mlbb','clash','roblox'],         nota:'Escuadra de Free Fire, escribo por chat.'},
+  {id:'ej-diego', nick:'Diego_R',    plat:'PC',      horario:'madrugada', region:'LAN · México',    mic:true,  rango:'Ranked serio',top:['lol','dota','valorant'],                    nota:'Mid o jungla, madrugadas.'},
+  {id:'ej-sofi',  nick:'sofi.builds',plat:'PC',      horario:'tarde',     region:'LAS · Chile',     mic:false, rango:'Casual',      top:['minecraft','stardew','amongus','roblox'],   nota:'Server survival tranqui, sin griefing.'},
+  {id:'ej-nico',  nick:'nico2fast',  plat:'Consola', horario:'noche',     region:'LAS · Argentina', mic:true,  rango:'Competitivo', top:['warzone','apex','fortnite','rocket'],       nota:'Trío para Warzone, uso mic siempre.'},
+  {id:'ej-vale',  nick:'ValeM',      plat:'PC',      horario:'noche',     region:'LAS · Perú',      mic:true,  rango:'Intermedio',  top:['valorant','minecraft','amongus','stardew'], nota:'Juego de todo, prefiero gente paciente.'},
+  {id:'ej-bruno', nick:'brunoxd',    plat:'Móvil',   horario:'mañana',    region:'LAS · Perú',      mic:false, rango:'Casual',      top:['clash','freefire','mlbb'],                  nota:'Clan de Clash activo, aporto donaciones.'}
+];
+EJEMPLOS.forEach(function(p){ p.ejemplo = true; if(!HORAS[p.horario]) p.horario = 'manana'; });
+
+/* ============================ carátulas ============================ */
+
+var artId = 0;
+function motif(art, c1){
+  switch(art){
+    case 'chevron':   return '<path d="M22 120 L60 42 L98 120 L82 120 L60 76 L38 120 Z" fill="'+c1+'"/><path d="M44 120 L60 88 L76 120 Z" fill="#ffffff" opacity=".22"/>';
+    case 'orb':       return '<ellipse cx="60" cy="80" rx="46" ry="17" fill="none" stroke="'+c1+'" stroke-width="3" opacity=".45" transform="rotate(-22 60 80)"/><circle cx="60" cy="80" r="26" fill="none" stroke="'+c1+'" stroke-width="6"/><circle cx="60" cy="80" r="10" fill="'+c1+'"/>';
+    case 'flame':     return '<path d="M60 34 C74 58 88 64 88 88 a28 28 0 0 1 -56 0 c0 -16 10 -22 15 -35 c5 11 3 19 9 21 c6 -13 -2 -26 4 -40 Z" fill="'+c1+'"/><path d="M60 68 c8 12 12 17 12 27 a12 12 0 0 1 -24 0 c0 -10 6 -15 12 -27 Z" fill="#ffffff" opacity=".4"/>';
+    case 'storm':     return '<circle cx="60" cy="82" r="34" fill="none" stroke="'+c1+'" stroke-width="4"/><circle cx="60" cy="82" r="21" fill="none" stroke="'+c1+'" stroke-width="3" opacity=".55"/><path d="M65 58 L48 84 h10 l-5 22 18 -28 h-11 z" fill="#ffffff" opacity=".9"/>';
+    case 'blocks':    return '<g fill="'+c1+'"><path d="M60 44 L86 58 L60 72 L34 58 Z"/><path d="M34 62 L60 76 L60 106 L34 92 Z" opacity=".72"/><path d="M86 62 L60 76 L60 106 L86 92 Z" opacity=".45"/></g><path d="M46 51 L60 58 L74 51" fill="none" stroke="#ffffff" stroke-width="2" opacity=".3"/>';
+    case 'city':      return '<g fill="'+c1+'"><rect x="24" y="72" width="16" height="46"/><rect x="44" y="52" width="14" height="66"/><rect x="62" y="64" width="18" height="54"/><rect x="84" y="80" width="13" height="38"/></g><g fill="#ffffff" opacity=".38"><rect x="28" y="78" width="4" height="5"/><rect x="48" y="60" width="4" height="5"/><rect x="66" y="72" width="4" height="5"/><rect x="88" y="88" width="4" height="5"/><rect x="48" y="74" width="4" height="5"/><rect x="66" y="88" width="4" height="5"/></g>';
+    case 'crosshair': return '<circle cx="60" cy="80" r="30" fill="none" stroke="'+c1+'" stroke-width="3.5"/><g stroke="'+c1+'" stroke-width="4" stroke-linecap="round"><path d="M60 40 V58"/><path d="M60 102 V120"/><path d="M20 80 H38"/><path d="M82 80 H100"/></g><circle cx="60" cy="80" r="5" fill="'+c1+'"/>';
+    case 'blades':    return '<g stroke="'+c1+'" stroke-width="7" stroke-linecap="round"><path d="M34 116 L86 46"/><path d="M86 116 L34 46"/></g><g fill="#ffffff" opacity=".35"><circle cx="34" cy="46" r="5"/><circle cx="86" cy="46" r="5"/></g>';
+    case 'capsule':   return '<path d="M42 66 a18 18 0 0 1 36 0 v30 a18 18 0 0 1 -36 0 Z" fill="'+c1+'"/><path d="M50 68 h22 a8 8 0 0 1 0 16 h-22 Z" fill="#BFE9F5"/><rect x="36" y="96" width="10" height="20" rx="4" fill="'+c1+'"/><rect x="74" y="96" width="10" height="20" rx="4" fill="'+c1+'"/>';
+    case 'ball':      return '<circle cx="62" cy="80" r="24" fill="'+c1+'"/><path d="M62 56 l9 9 -9 9 -9 -9 z" fill="#ffffff" opacity=".55"/><g stroke="'+c1+'" stroke-width="3.5" stroke-linecap="round" opacity=".6"><path d="M20 66 H36"/><path d="M14 80 H32"/><path d="M20 94 H36"/></g>';
+    case 'pitch':     return '<rect x="22" y="48" width="76" height="68" rx="3" fill="none" stroke="'+c1+'" stroke-width="3"/><path d="M60 48 V116" stroke="'+c1+'" stroke-width="2.5"/><circle cx="60" cy="82" r="13" fill="none" stroke="'+c1+'" stroke-width="2.5"/><rect x="22" y="68" width="12" height="28" fill="none" stroke="'+c1+'" stroke-width="2.5"/><rect x="86" y="68" width="12" height="28" fill="none" stroke="'+c1+'" stroke-width="2.5"/>';
+    case 'pixel':     return '<g fill="'+c1+'"><rect x="30" y="50" width="18" height="18" rx="2"/><rect x="52" y="50" width="18" height="18" rx="2" opacity=".6"/><rect x="74" y="72" width="18" height="18" rx="2"/><rect x="30" y="72" width="18" height="18" rx="2" opacity=".55"/><rect x="52" y="94" width="18" height="18" rx="2"/><rect x="74" y="50" width="18" height="18" rx="2" opacity=".35"/></g>';
+    case 'ring':      return '<path d="M60 48 a32 32 0 1 1 -0.1 0" fill="none" stroke="'+c1+'" stroke-width="6" stroke-linecap="round" stroke-dasharray="150 30"/><path d="M60 60 L54 80 L66 84 L58 104" fill="none" stroke="#ffffff" stroke-width="2.5" opacity=".55"/>';
+    case 'triangle':  return '<path d="M60 48 L92 116 H28 Z" fill="none" stroke="'+c1+'" stroke-width="6" stroke-linejoin="round"/><path d="M60 74 L76 108 H44 Z" fill="'+c1+'" opacity=".55"/>';
+    case 'crown':     return '<path d="M28 108 L34 58 L48 78 L60 48 L72 78 L86 58 L92 108 Z" fill="'+c1+'"/><rect x="28" y="108" width="64" height="10" rx="3" fill="'+c1+'" opacity=".7"/><circle cx="60" cy="92" r="5" fill="#ffffff" opacity=".45"/>';
+  }
+  return '';
+}
+function coverSVG(g, w, h){
+  var uid = 'g' + (artId++);
+  return '<svg viewBox="0 0 120 160" width="'+w+'" height="'+h+'" role="img" aria-label="Carátula de '+g.name+'">'
+    + '<defs><linearGradient id="'+uid+'" x1="0" y1="0" x2="0.6" y2="1">'
+    +   '<stop offset="0" stop-color="'+g.c2+'"/><stop offset="1" stop-color="#0B0711"/>'
+    + '</linearGradient></defs>'
+    + '<rect width="120" height="160" rx="9" fill="url(#'+uid+')"/>'
+    + '<rect x="0.75" y="0.75" width="118.5" height="158.5" rx="8.5" fill="none" stroke="'+g.c1+'" stroke-opacity=".38"/>'
+    + '<g opacity=".95">' + motif(g.art, g.c1) + '</g>'
+    + '<rect y="126" width="120" height="34" fill="#0B0711" opacity=".82"/>'
+    + '<text x="10" y="141" fill="#F2EAF5" font-family="Chakra Petch, sans-serif" font-size="11" font-weight="700">' + shorten(g.name, 16) + '</text>'
+    + '<text x="10" y="152" fill="'+g.c1+'" font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="1">' + g.tag.toUpperCase() + '</text>'
+    + '</svg>';
+}
+function shorten(s, n){ return s.length > n ? s.slice(0, n-1) + '…' : s; }
+
+/* ============================ estado ============================ */
+
+var CW = 84, CH = 112, GAPX = 96, GAPY = 10;
+var ZONE = {x:16, y:16, w:0, h:176};
+var SHELF_TOP = 248;
+
+var board = document.getElementById('board');
+var zoneEl = document.getElementById('zone');
+var covers = {};          /* id -> {el, game, x, y, picked} */
+var setup = [];           /* ids ordenados */
+var myId = readId();
+var perfil = loadPerfil();
+var realPlayers = [];     /* del db */
+var onlineIds = {};       /* del room */
+var invites = [];
+var wall = [];
+var DB = null, ROOM = null;
+
+function readId(){
+  var k = 'lobby.playerId', v = null;
+  try { v = localStorage.getItem(k); } catch(e){}
+  if(!v){
+    v = 'p-' + Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+    try { localStorage.setItem(k, v); } catch(e){}
+  }
+  return v;
+}
+function loadPerfil(){
+  var d = {nick:'', plat:'PC', horario:'noche', region:'LAS · Perú', mic:true, rango:'Casual', top:['valorant','minecraft','rocket']};
+  try {
+    var raw = localStorage.getItem('lobby.perfil');
+    if(raw){ var p = JSON.parse(raw); for(var k in d) if(p[k] !== undefined) d[k] = p[k]; }
+  } catch(e){}
+  if(!Array.isArray(d.top)) d.top = [];
+  d.top = d.top.filter(function(id){ return !!GMAP[id]; }).slice(0,5);
+  return d;
+}
+function savePerfilLocal(){
+  perfil.top = setup.slice();
+  try { localStorage.setItem('lobby.perfil', JSON.stringify(perfil)); } catch(e){}
+}
+
+/* ============================ mesa ============================ */
+
+function boardW(){ return Math.max(board.clientWidth, 860); }
+function shelfSlot(i){
+  var cols = Math.max(1, Math.floor((boardW() - 32) / GAPX));
+  return {x: 20 + (i % cols) * GAPX, y: SHELF_TOP + Math.floor(i / cols) * (CH + GAPY)};
+}
+function inZone(x, y){
+  var cx = x + CW/2, cy = y + CH/2;
+  return cx > ZONE.x && cx < ZONE.x + zoneEl.clientWidth && cy > ZONE.y && cy < ZONE.y + ZONE.h;
+}
+
+function buildBoard(){
+  GAMES.forEach(function(g){
+    var el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'cover';
+    el.setAttribute('aria-label', g.name + ' — ' + g.tag);
+    el.innerHTML = coverSVG(g, CW, CH) + '<span class="rank" aria-hidden="true"></span>';
+    board.appendChild(el);
+    covers[g.id] = {el:el, game:g, x:0, y:0, picked:false};
+    attachDrag(g.id);
+  });
+  setup = perfil.top.slice(0,5);
+  setup.forEach(function(id){ covers[id].picked = true; });
+  layout();
+}
+
+function layout(){
+  var shelfIndex = 0, zw = zoneEl.clientWidth || (boardW() - 32);
+  var step = Math.min(GAPX, Math.max(64, (zw - 48) / Math.max(setup.length, 1)));
+  var bottom = ZONE.y + ZONE.h + 56;
+  GAMES.forEach(function(g){
+    var c = covers[g.id];
+    if(c.dragging) return;
+    if(c.picked){
+      var i = setup.indexOf(g.id);
+      c.x = ZONE.x + 20 + i * step;
+      c.y = ZONE.y + 48;
+    } else {
+      var s = shelfSlot(shelfIndex++);
+      c.x = s.x; c.y = s.y;
+      bottom = Math.max(bottom, s.y + CH);
+    }
+    place(c);
+  });
+  board.style.height = (bottom + 20) + 'px';
+  paintRanks();
+  refresh();
+}
+function place(c){
+  c.el.style.left = c.x + 'px';
+  c.el.style.top = c.y + 'px';
+}
+function paintRanks(){
+  GAMES.forEach(function(g){
+    var c = covers[g.id], i = setup.indexOf(g.id);
+    c.el.classList.toggle('picked', i >= 0);
+    c.el.querySelector('.rank').textContent = i >= 0 ? String(i+1) : '';
+  });
+}
+function reorderFromPositions(){
+  setup.sort(function(a,b){ return covers[a].x - covers[b].x; });
+}
+
+function attachDrag(id){
+  var c = covers[id], el = c.el;
+  var startX = 0, startY = 0, offX = 0, offY = 0, moved = false, pid = null;
+
+  el.addEventListener('pointerdown', function(ev){
+    if(ev.button !== undefined && ev.button !== 0) return;
+    pid = ev.pointerId; moved = false;
+    var r = board.getBoundingClientRect();
+    startX = ev.clientX; startY = ev.clientY;
+    offX = ev.clientX - r.left - c.x;
+    offY = ev.clientY - r.top - c.y;
+    c.dragging = true;
+    el.classList.add('dragging');
+    el.setPointerCapture(pid);
+  });
+
+  el.addEventListener('pointermove', function(ev){
+    if(!c.dragging || ev.pointerId !== pid) return;
+    if(Math.abs(ev.clientX-startX) > 4 || Math.abs(ev.clientY-startY) > 4) moved = true;
+    var r = board.getBoundingClientRect();
+    c.x = clamp(ev.clientX - r.left - offX, 4, boardW() - CW - 4);
+    c.y = clamp(ev.clientY - r.top - offY, 4, board.clientHeight - CH - 4);
+    place(c);
+    zoneEl.classList.toggle('hot', inZone(c.x, c.y));
+    if(c.picked){ reorderFromPositions(); paintRanks(); }
+  });
+
+  function end(ev){
+    if(!c.dragging || (ev.pointerId !== undefined && ev.pointerId !== pid)) return;
+    c.dragging = false;
+    el.classList.remove('dragging');
+    zoneEl.classList.remove('hot');
+    try { el.releasePointerCapture(pid); } catch(e){}
+    if(!moved){ toggle(id); return; }
+    var want = inZone(c.x, c.y);
+    if(want && !c.picked){
+      if(setup.length >= 5){ bounce(el, 'Tu setup guarda hasta 5 juegos. Saca uno primero.'); layout(); return; }
+      c.picked = true; setup.push(id);
+    } else if(!want && c.picked){
+      c.picked = false; setup = setup.filter(function(x){ return x !== id; });
+    }
+    reorderFromPositions();
+    layout();
+    onSetupChanged();
+  }
+  el.addEventListener('pointerup', end);
+  el.addEventListener('pointercancel', end);
+
+  el.addEventListener('keydown', function(ev){
+    var i = setup.indexOf(id);
+    if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); toggle(id); }
+    else if(i >= 0 && (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight')){
+      ev.preventDefault();
+      var j = ev.key === 'ArrowLeft' ? i-1 : i+1;
+      if(j < 0 || j >= setup.length) return;
+      setup.splice(j, 0, setup.splice(i,1)[0]);
+      layout(); onSetupChanged();
+    }
+  });
+}
+function toggle(id){
+  var c = covers[id];
+  if(c.picked){
+    c.picked = false; setup = setup.filter(function(x){ return x !== id; });
+  } else {
+    if(setup.length >= 5){ bounce(c.el, 'Tu setup guarda hasta 5 juegos. Saca uno primero.'); return; }
+    c.picked = true; setup.push(id);
+  }
+  layout(); onSetupChanged();
+}
+function bounce(el, msg){
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+  toast(msg, 'warn');
+}
+function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
+
+function onSetupChanged(){
+  savePerfilLocal();
+  publishPerfil(false);
+}
+
+/* ============================ afinidad ============================ */
+
+function peso(i){ return Math.max(1, 5 - i); }   /* 5 4 3 2 1 */
+
+function afinidad(mine, other){
+  var top = (other.top || []).filter(function(id){ return !!GMAP[id]; });
+  var maxJ = 0, gotJ = 0, shared = [];
+  mine.forEach(function(id, i){
+    maxJ += peso(i);
+    var j = top.indexOf(id);
+    if(j >= 0){ shared.push(id); gotJ += peso(i) * (1 - Math.min(j,4) * 0.09); }
+  });
+  var juegos = maxJ ? Math.round(60 * gotJ / maxJ) : 0;
+
+  var plat = perfil.plat === other.plat ? 15 : 0;
+  if(!plat && shared.length){
+    var cross = shared.some(function(id){ return GMAP[id].plats.length > 1; });
+    if(cross) plat = 7;
+  }
+  var a = ORDEN_HORA.indexOf(perfil.horario), b = ORDEN_HORA.indexOf(other.horario);
+  var d = (a < 0 || b < 0) ? 9 : Math.min(Math.abs(a-b), 4 - Math.abs(a-b));
+  var hora = d === 0 ? 15 : (d === 1 ? 7 : 0);
+  var region = perfil.region === other.region ? 10 : 0;
+
+  return {
+    total: Math.min(100, juegos + plat + hora + region),
+    juegos: juegos, plat: plat, hora: hora, region: region, shared: shared
+  };
+}
+
+function razones(a){
+  var out = [];
+  if(a.shared.length) out.push(a.shared.length + (a.shared.length === 1 ? ' juego en común' : ' juegos en común'));
+  if(a.plat === 15) out.push('misma plataforma');
+  else if(a.plat) out.push('juegos multiplataforma');
+  if(a.hora === 15) out.push('mismo horario');
+  else if(a.hora) out.push('horario cercano');
+  if(a.region) out.push('misma región');
+  return out.length ? out.join(' · ') : 'todavía nada en común';
+}
+
+/* ============================ render ============================ */
+
+function refresh(){
+  document.getElementById('cSetup').textContent = String(setup.length);
+  var all = realPlayers.concat(EJEMPLOS);
+  document.getElementById('cPlayers').textContent = String(realPlayers.length);
+  renderReadout();
+  renderMatches();
+  renderOnline();
+}
+
+function renderReadout(){
+  var el = document.getElementById('readout');
+  el.textContent = '';
+  if(!setup.length){
+    el.appendChild(txt('span', 'Tu setup está vacío: arrastra una carátula al recuadro dorado.', 'muted'));
+    return;
+  }
+  el.appendChild(txt('span', 'Tu orden:'));
+  setup.forEach(function(id, i){
+    var chip = document.createElement('span');
+    chip.className = 'pick-chip';
+    var n = document.createElement('i'); n.textContent = String(i+1);
+    chip.appendChild(n);
+    chip.appendChild(document.createTextNode(GMAP[id].name));
+    el.appendChild(chip);
+  });
+}
+
+function passFilter(p, a){
+  var g = document.getElementById('fltGame').value;
+  if(g && (p.top || []).indexOf(g) < 0) return false;
+  var pl = document.getElementById('fltPlat').value;
+  if(pl && p.plat !== pl) return false;
+  var h = document.getElementById('fltHora').value;
+  if(h && p.horario !== h) return false;
+  if(document.getElementById('fltMic').checked && !p.mic) return false;
+  if(document.getElementById('fltOn').checked && !onlineIds[p.id]) return false;
+  return true;
+}
+
+function renderMatches(){
+  var best = 0;
+  [['gridReal', realPlayers], ['gridDemo', EJEMPLOS]].forEach(function(pair){
+    var host = document.getElementById(pair[0]);
+    host.textContent = '';
+    var rows = pair[1].map(function(p){ return {p:p, a:afinidad(setup, p)}; })
+                      .filter(function(r){ return passFilter(r.p, r.a); })
+                      .sort(function(x,y){ return y.a.total - x.a.total; });
+    if(!rows.length){
+      host.appendChild(emptyState(pair[0] === 'gridReal'
+        ? ['Todavía no hay nadie más aquí', 'Publica tu ficha y comparte el enlace de esta página: cada persona que guarde su setup aparecerá en esta fila.']
+        : ['Ningún perfil de ejemplo pasa los filtros', 'Quita algún filtro para volver a verlos.']));
+      return;
+    }
+    rows.forEach(function(r, i){
+      if(!r.p.ejemplo) best = Math.max(best, r.a.total);
+      host.appendChild(playerCard(r.p, r.a, i === 0 && r.a.total >= 40));
+    });
+    if(pair[0] === 'gridDemo') best = Math.max(best, rows[0].a.total);
+  });
+  document.getElementById('cBest').textContent = best ? best + '%' : '—';
+}
+
+function emptyState(pair){
+  var d = document.createElement('div');
+  d.className = 'empty';
+  var b = document.createElement('b'); b.textContent = pair[0];
+  d.appendChild(b);
+  d.appendChild(document.createTextNode(pair[1]));
+  return d;
+}
+
+function playerCard(p, a, isTop){
+  var card = document.createElement('article');
+  card.className = 'pcard' + (isTop ? ' top' : '');
+
+  var head = document.createElement('div'); head.className = 'pcard-head';
+  head.appendChild(ringEl(a.total));
+
+  var idbox = document.createElement('div'); idbox.style.minWidth = '0';
+  var h3 = document.createElement('h3');
+  h3.appendChild(document.createTextNode(p.nick || 'Sin nick'));
+  if(p.ejemplo) h3.appendChild(tagEl('ejemplo', 'ex'));
+  else if(onlineIds[p.id]) h3.appendChild(tagEl('en línea', 'on'));
+  idbox.appendChild(h3);
+  var meta = document.createElement('div'); meta.className = 'meta';
+  meta.textContent = p.plat + ' · ' + (HORAS[p.horario] || p.horario) + ' · ' + p.region;
+  idbox.appendChild(meta);
+  head.appendChild(idbox);
+  card.appendChild(head);
+
+  var chips = document.createElement('div'); chips.className = 'chips';
+  chips.appendChild(txt('span', p.rango || 'Casual', 'chip'));
+  chips.appendChild(txt('span', p.mic ? 'Con micrófono' : 'Solo chat', 'chip'));
+  card.appendChild(chips);
+
+  if(p.nota){
+    var nota = document.createElement('p');
+    nota.style.cssText = 'font-size:13.5px;color:var(--muted)';
+    nota.textContent = '“' + p.nota + '”';
+    card.appendChild(nota);
+  }
+
+  var sh = document.createElement('div'); sh.className = 'shared';
+  (p.top || []).slice(0,5).forEach(function(id){
+    var g = GMAP[id]; if(!g) return;
+    var m = document.createElement('span');
+    m.className = 'mini' + (a.shared.indexOf(id) < 0 ? ' faded' : '');
+    m.title = g.name + (a.shared.indexOf(id) < 0 ? '' : ' — también en tu setup');
+    m.innerHTML = coverSVG(g, 30, 40);
+    sh.appendChild(m);
+  });
+  card.appendChild(sh);
+
+  var why = document.createElement('div'); why.className = 'why';
+  var b = document.createElement('b'); b.textContent = a.total + '% ';
+  why.appendChild(b);
+  why.appendChild(document.createTextNode('· ' + razones(a)));
+  card.appendChild(why);
+
+  var act = document.createElement('div'); act.className = 'pcard-actions';
+  var sel = document.createElement('select');
+  sel.setAttribute('aria-label', 'Juego para la invitación');
+  var opts = a.shared.length ? a.shared : (p.top || []).slice(0,3);
+  opts.forEach(function(id){
+    var o = document.createElement('option'); o.value = id; o.textContent = GMAP[id].name; sel.appendChild(o);
+  });
+  if(!opts.length){ var o = document.createElement('option'); o.value = ''; o.textContent = 'Sin juego en común'; sel.appendChild(o); }
+  act.appendChild(sel);
+  var btn = document.createElement('button');
+  btn.type = 'button'; btn.className = 'btn btn-sm btn-primary'; btn.textContent = 'Invitar a jugar';
+  btn.addEventListener('click', function(){ invitar(p, sel.value); });
+  act.appendChild(btn);
+  card.appendChild(act);
+
+  return card;
+}
+
+function ringEl(pct){
+  var wrap = document.createElement('div'); wrap.className = 'ring';
+  var r = 25, c = 2 * Math.PI * r;
+  var col = pct >= 70 ? '#59E3A7' : (pct >= 40 ? '#FFCE5C' : '#FF4D5E');
+  wrap.innerHTML =
+    '<svg width="60" height="60" viewBox="0 0 60 60" aria-hidden="true">' +
+      '<circle cx="30" cy="30" r="'+r+'" fill="none" stroke="#2A1B3B" stroke-width="6"/>' +
+      '<circle cx="30" cy="30" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="6" stroke-linecap="round" ' +
+        'stroke-dasharray="'+c+'" stroke-dashoffset="'+(c * (1 - pct/100))+'"/>' +
+    '</svg>';
+  var b = document.createElement('b'); b.textContent = pct + '%';
+  b.style.color = col;
+  wrap.appendChild(b);
+  wrap.setAttribute('title', pct + '% de afinidad');
+  return wrap;
+}
+function tagEl(text, cls){ return txt('span', text, 'tag ' + cls); }
+function txt(tag, text, cls){
+  var e = document.createElement(tag);
+  if(cls) e.className = cls;
+  e.textContent = text;
+  return e;
+}
+
+/* ============================ lobby ============================ */
+
+function renderOnline(){
+  var host = document.getElementById('onList');
+  host.textContent = '';
+  var names = Object.keys(onlineIds).map(function(k){ return onlineIds[k]; });
+  document.getElementById('onCount').textContent = names.length ? names.length + ' ahora' : '';
+  if(!names.length){
+    host.appendChild(txt('p', ROOM ? 'Nadie más tiene la página abierta en este momento.' : 'La presencia en vivo no está disponible en esta copia de la página.', 'muted'));
+    return;
+  }
+  names.forEach(function(n){
+    var row = document.createElement('div'); row.className = 'online-row';
+    row.appendChild(txt('span', '', 'dot'));
+    row.appendChild(document.createTextNode(n.nick || 'Alguien'));
+    if(n.id === myId) row.appendChild(txt('span', 'tú', 'me'));
+    host.appendChild(row);
+  });
+}
+
+function renderWall(){
+  var host = document.getElementById('wallFeed');
+  host.textContent = '';
+  document.getElementById('wallCount').textContent = wall.length ? wall.length + ' mensajes' : '';
+  if(!wall.length){
+    host.appendChild(txt('p', DB ? 'El muro está vacío. Escribe lo que estás buscando y serás el primero.' : 'El muro compartido necesita el lobby conectado. Aquí solo verás lo que escribas tú.', 'muted'));
+    return;
+  }
+  wall.forEach(function(m){
+    var row = document.createElement('div'); row.className = 'msg';
+    var av = document.createElement('div'); av.className = 'av';
+    av.style.background = colorFor(m.nick || '?');
+    av.textContent = (m.nick || '?').slice(0,1).toUpperCase();
+    row.appendChild(av);
+    var body = document.createElement('div'); body.className = 'msg-body';
+    var who = document.createElement('div'); who.className = 'who';
+    who.appendChild(document.createTextNode(m.nick || 'Alguien'));
+    who.appendChild(txt('span', hace(m.ts), 'when'));
+    body.appendChild(who);
+    body.appendChild(txt('p', m.text || ''));
+    row.appendChild(body);
+    host.appendChild(row);
+  });
+}
+
+function renderInvites(){
+  var host = document.getElementById('invList');
+  host.textContent = '';
+  document.getElementById('invCount').textContent = invites.length ? invites.length + ' sin responder' : '';
+  if(!invites.length){
+    host.appendChild(txt('p', 'Nada por ahora. Cuando alguien te invite desde su lista de coincidencias, aparecerá aquí.', 'muted'));
+    return;
+  }
+  invites.forEach(function(iv){
+    var box = document.createElement('div'); box.className = 'invite';
+    var g = document.createElement('div'); g.className = 'grow';
+    var strong = document.createElement('b'); strong.textContent = iv.nick || 'Alguien';
+    g.appendChild(strong);
+    g.appendChild(document.createTextNode(' te invita a ' + ((GMAP[iv.game] && GMAP[iv.game].name) || 'jugar') + '.'));
+    box.appendChild(g);
+    var ok = document.createElement('button');
+    ok.type = 'button'; ok.className = 'btn btn-sm btn-primary'; ok.textContent = 'Aceptar';
+    ok.addEventListener('click', function(){ aceptar(iv); });
+    var no = document.createElement('button');
+    no.type = 'button'; no.className = 'btn btn-sm btn-ghost'; no.textContent = 'Descartar';
+    no.addEventListener('click', function(){ descartar(iv); });
+    box.appendChild(ok); box.appendChild(no);
+    host.appendChild(box);
+  });
+}
+
+function colorFor(s){
+  var h = 0; for(var i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) % 360;
+  return 'hsl(' + h + ' 62% 66%)';
+}
+function hace(ts){
+  if(!ts) return '';
+  var s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+  if(s < 60) return 'hace ' + s + 's';
+  if(s < 3600) return 'hace ' + Math.round(s/60) + ' min';
+  if(s < 86400) return 'hace ' + Math.round(s/3600) + ' h';
+  return 'hace ' + Math.round(s/86400) + ' d';
+}
+
+/* ============================ acciones ============================ */
+
+function toast(msg, kind){
+  var host = document.getElementById('toasts');
+  var t = document.createElement('div');
+  t.className = 'toast' + (kind ? ' ' + kind : '');
+  t.textContent = msg;
+  host.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 5200);
+}
+
+function nickOrAsk(){
+  if(perfil.nick && perfil.nick.trim()) return perfil.nick.trim();
+  toast('Primero pon tu nick en la ficha y publícala.', 'warn');
+  document.getElementById('fNick').focus();
+  return null;
+}
+
+function invitar(p, gameId){
+  if(p.ejemplo){
+    toast(p.nick + ' es un perfil de ejemplo, no una persona. Comparte el enlace para que entren jugadores reales.', 'warn');
+    return;
+  }
+  var nick = nickOrAsk(); if(!nick) return;
+  var payload = {to:p.id, from:myId, nick:nick, game:gameId || '', ts:Date.now()};
+  if(DB){
+    DB.collection('invites').add(payload).then(function(){
+      toast('Invitación enviada a ' + p.nick + '.', 'good');
+    }).catch(function(){ toast('No se pudo enviar la invitación. Intenta de nuevo.', 'warn'); });
+  } else {
+    toast('Sin lobby conectado no se puede enviar la invitación.', 'warn');
+  }
+  if(ROOM) ROOM.emit('invite', payload).catch(function(){});
+}
+
+function aceptar(iv){
+  var nick = nickOrAsk(); if(!nick) return;
+  postWall('Acepté la invitación de ' + (iv.nick || 'alguien') + ' para jugar ' + ((GMAP[iv.game] && GMAP[iv.game].name) || 'algo') + '.');
+  descartar(iv);
+  toast('Listo. Quedó publicado en el muro para que se pongan de acuerdo.', 'good');
+}
+function descartar(iv){
+  invites = invites.filter(function(x){ return x._id !== iv._id; });
+  renderInvites();
+  if(DB && iv._id) DB.doc('invites/' + iv._id).delete().catch(function(){});
+}
+
+function postWall(text){
+  var nick = perfil.nick && perfil.nick.trim() ? perfil.nick.trim() : 'Anónimo';
+  var m = {nick:nick, text:text, ts:Date.now(), by:myId};
+  if(DB){
+    DB.collection('wall').add(m).catch(function(){ toast('No se pudo publicar el mensaje.', 'warn'); });
+  } else {
+    m._id = 'local-' + Date.now();
+    wall.unshift(m); wall = wall.slice(0,30); renderWall();
+  }
+}
+
+function publishPerfil(loud){
+  savePerfilLocal();
+  if(!DB){
+    if(loud) toast('Guardado en este navegador. El lobby compartido no está disponible en esta copia.', 'warn');
+    return;
+  }
+  if(!perfil.nick || !perfil.nick.trim()){
+    if(loud) toast('Pon un nick antes de publicar tu ficha.', 'warn');
+    return;
+  }
+  DB.doc('players/' + myId).set({
+    nick: perfil.nick.trim().slice(0,22),
+    plat: perfil.plat, horario: perfil.horario, region: perfil.region,
+    mic: !!perfil.mic, rango: perfil.rango,
+    top: setup.slice(0,5), ts: Date.now()
+  }).then(function(){
+    if(loud){
+      toast('Ficha publicada. Ya apareces en el lobby.', 'good');
+      var n = document.getElementById('saveNote');
+      n.textContent = 'Publicada · ' + new Date().toLocaleTimeString('es-PE', {hour:'2-digit', minute:'2-digit'});
+      n.className = 'save-note ok';
+    }
+  }).catch(function(){ if(loud) toast('No se pudo publicar la ficha. Intenta de nuevo.', 'warn'); });
+  if(ROOM) ROOM.presence({id:myId, nick:perfil.nick.trim().slice(0,22)}).catch(function(){});
+}
+
+/* ============================ formularios ============================ */
+
+function bindForm(){
+  var f = {
+    fNick:'nick', fPlat:'plat', fHorario:'horario', fRegion:'region', fRango:'rango'
+  };
+  Object.keys(f).forEach(function(domId){
+    var el = document.getElementById(domId), key = f[domId];
+    if(perfil[key] != null) el.value = perfil[key];
+    el.addEventListener('input', function(){ perfil[key] = el.value; savePerfilLocal(); refresh(); });
+    el.addEventListener('change', function(){ perfil[key] = el.value; savePerfilLocal(); refresh(); });
+  });
+  var mic = document.getElementById('fMic');
+  mic.checked = !!perfil.mic;
+  mic.addEventListener('change', function(){ perfil.mic = mic.checked; savePerfilLocal(); refresh(); });
+
+  document.getElementById('btnSave').addEventListener('click', function(){ publishPerfil(true); });
+  document.getElementById('btnClear').addEventListener('click', function(){
+    setup = []; GAMES.forEach(function(g){ covers[g.id].picked = false; });
+    layout(); onSetupChanged();
+  });
+
+  var sel = document.getElementById('fltGame');
+  GAMES.slice().sort(function(a,b){ return a.name.localeCompare(b.name, 'es'); }).forEach(function(g){
+    var o = document.createElement('option'); o.value = g.id; o.textContent = g.name; sel.appendChild(o);
+  });
+  ['fltGame','fltPlat','fltHora','fltMic','fltOn'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', renderMatches);
+  });
+
+  document.getElementById('wallForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var input = document.getElementById('wallInput');
+    var v = input.value.trim();
+    if(!v) return;
+    postWall(v.slice(0,140));
+    input.value = '';
+  });
+}
+
+/* ============================ capacidades ============================ */
+
+function connect(){
+  if(!window.claude || typeof window.claude.use !== 'function') return;
+
+  window.claude.use('db').then(function(db){
+    if(!db) return;
+    DB = db;
+    setStatus(true, 'Lobby conectado');
+
+    db.collection('players').limit(200).onSnapshot(function(snap){
+      realPlayers = [];
+      snap.docs.forEach(function(d){
+        if(d.id === myId) return;
+        var v = d.data() || {};
+        realPlayers.push({
+          id: d.id,
+          nick: String(v.nick || 'Sin nick').slice(0,22),
+          plat: ['PC','Consola','Móvil'].indexOf(v.plat) >= 0 ? v.plat : 'PC',
+          horario: HORAS[v.horario] ? v.horario : 'noche',
+          region: String(v.region || 'Otra').slice(0,24),
+          mic: !!v.mic,
+          rango: String(v.rango || 'Casual').slice(0,18),
+          top: Array.isArray(v.top) ? v.top.filter(function(x){ return !!GMAP[x]; }).slice(0,5) : []
+        });
+      });
+      refresh();
+    }, function(){ setStatus(false, 'Lobby sin conexión'); });
+
+    db.collection('wall').orderBy('ts','desc').limit(30).onSnapshot(function(snap){
+      wall = snap.docs.map(function(d){
+        var v = d.data() || {};
+        return {_id:d.id, nick:String(v.nick||'Alguien').slice(0,22), text:String(v.text||'').slice(0,140), ts:Number(v.ts)||0};
+      });
+      renderWall();
+    }, function(){});
+
+    db.collection('invites').where('to','==',myId).limit(20).onSnapshot(function(snap){
+      invites = snap.docs.map(function(d){
+        var v = d.data() || {};
+        return {_id:d.id, nick:String(v.nick||'Alguien').slice(0,22), game:String(v.game||''), from:String(v.from||''), ts:Number(v.ts)||0};
+      }).sort(function(a,b){ return b.ts - a.ts; });
+      renderInvites();
+    }, function(){});
+  }).catch(function(){});
+
+  window.claude.use('room').then(function(room){
+    if(!room) return;
+    ROOM = room;
+    room.onPeers(function(){
+      onlineIds = {};
+      room.peers().forEach(function(p){
+        var pr = p.presence || {};
+        var id = typeof pr.id === 'string' ? pr.id.slice(0,64) : null;
+        if(!id) return;
+        onlineIds[id] = {id:id, nick: typeof pr.nick === 'string' ? pr.nick.slice(0,22) : 'Alguien'};
+      });
+      renderOnline();
+      renderMatches();
+    }, function(){});
+    room.on('invite', function(msg){
+      var d = msg && msg.data;
+      if(!d || d.to !== myId || msg.isMe) return;
+      var who = typeof d.nick === 'string' ? d.nick.slice(0,22) : 'Alguien';
+      var g = GMAP[d.game];
+      toast(who + ' te invitó a jugar' + (g ? ' ' + g.name : '') + '.', 'good');
+    }, function(){});
+    room.presence({id:myId, nick: (perfil.nick || 'Alguien').slice(0,22)}).catch(function(){});
+    renderOnline();
+  }).catch(function(){});
+}
+
+function setStatus(live, text){
+  var el = document.getElementById('status');
+  el.classList.toggle('live', !!live);
+  document.getElementById('statusText').textContent = text;
+}
+
+/* ============================ arranque ============================ */
+
+buildBoard();
+bindForm();
+renderWall();
+renderInvites();
+renderOnline();
+refresh();
+connect();
+
+var rt;
+window.addEventListener('resize', function(){
+  clearTimeout(rt);
+  rt = setTimeout(layout, 140);
+});
+setInterval(renderWall, 60000);
+
+})();
+</script>
+
+</body>
+</html>
