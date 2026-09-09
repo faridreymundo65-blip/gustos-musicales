@@ -1,139 +1,148 @@
-"""CRUD de alumnos en consola (Python + MySQL)."""
+import mysql.connector
 
-from mysql.connector import Error
+# configuracion de conexion
+conexion = mysql.connector.connect(
+    host="127.0.0.1",
+    user="root",
+    password="",
+    database="matricula"
+    # port=3307,   <- descomenta esta linea si tu MySQL usa el puerto 3307
+)
 
-from conexion import conectar
+cursor = conexion.cursor(dictionary=True)
 
 
-def crear():
-    """CREATE: inserta un alumno nuevo."""
-    matricula = input("Matricula: ").strip()
-    nombre = input("Nombre: ").strip()
-    apellido = input("Apellido: ").strip()
-    edad = input("Edad: ").strip()
-    carrera = input("Carrera: ").strip()
+# funciones del crud
+def crear_alumno(codalu, patalu, matalu, nombre, edad, sexo, direc, dist, correo):
+    cursor.execute(
+        "insert into alumno (cod_alumno, pat_alu, mat_alu, nom_alu, edad_alu, "
+        "sexo_alu, direc_alu, dist_alu, correo_alu) "
+        "values (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+        (codalu, patalu, matalu, nombre, edad, sexo, direc, dist, correo)
+    )
+    conexion.commit()
 
-    conexion = conectar()
-    if not conexion:
+    print("alumno insertado.!!")
+
+
+def leer_alumnos():
+    cursor.execute(
+        "select cod_alumno, pat_alu, mat_alu, nom_alu, edad_alu, sexo_alu, "
+        "dist_alu, correo_alu from alumno order by cod_alumno"
+    )
+    alumnos = cursor.fetchall()
+
+    if not alumnos:
+        print("\n No hay alumnos\n")
         return
-    try:
-        cursor = conexion.cursor()
-        cursor.execute(
-            "INSERT INTO alumnos (matricula, nombre, apellido, edad, carrera) "
-            "VALUES (%s, %s, %s, %s, %s)",
-            (matricula, nombre, apellido, edad, carrera),
+
+    print("\n Lista de Alumnos")
+    print("-" * 100)
+    for a in alumnos:
+        print(
+            f"{a['cod_alumno']:<10}{a['pat_alu']:<14}{a['mat_alu']:<14}"
+            f"{a['nom_alu']:<20}{a['edad_alu']:<5}{a['sexo_alu']:<4}"
+            f"{a['dist_alu'] or '':<20}{a['correo_alu'] or ''}"
         )
-        conexion.commit()
-        print(f"Alumno registrado con id {cursor.lastrowid}")
-    except Error as e:
-        print(f"No se pudo registrar: {e}")
-    finally:
-        conexion.close()
+    print(f"\n Total: {len(alumnos)} alumnos\n")
 
 
-def leer():
-    """READ: muestra todos los alumnos."""
-    conexion = conectar()
-    if not conexion:
-        return
-    try:
-        cursor = conexion.cursor()
-        cursor.execute(
-            "SELECT id, matricula, nombre, apellido, edad, carrera "
-            "FROM alumnos ORDER BY id"
-        )
-        filas = cursor.fetchall()
-        if not filas:
-            print("No hay alumnos registrados.")
-            return
-        print(f"\n{'ID':<4}{'MATRICULA':<12}{'NOMBRE':<15}{'APELLIDO':<15}{'EDAD':<6}CARRERA")
-        print("-" * 70)
-        for id_, matricula, nombre, apellido, edad, carrera in filas:
-            print(f"{id_:<4}{matricula:<12}{nombre:<15}{apellido:<15}{edad:<6}{carrera}")
-        print()
-    except Error as e:
-        print(f"No se pudo consultar: {e}")
-    finally:
-        conexion.close()
+def buscar_alumno(codalu):
+    cursor.execute("select * from alumno where cod_alumno = %s", (codalu,))
+    alumno = cursor.fetchone()
 
-
-def actualizar():
-    """UPDATE: modifica los datos de un alumno por su id."""
-    id_ = input("Id del alumno a modificar: ").strip()
-    nombre = input("Nuevo nombre: ").strip()
-    apellido = input("Nuevo apellido: ").strip()
-    edad = input("Nueva edad: ").strip()
-    carrera = input("Nueva carrera: ").strip()
-
-    conexion = conectar()
-    if not conexion:
-        return
-    try:
-        cursor = conexion.cursor()
-        cursor.execute(
-            "UPDATE alumnos SET nombre = %s, apellido = %s, edad = %s, carrera = %s "
-            "WHERE id = %s",
-            (nombre, apellido, edad, carrera, id_),
-        )
-        conexion.commit()
-        if cursor.rowcount:
-            print("Alumno actualizado.")
-        else:
-            print("No existe un alumno con ese id.")
-    except Error as e:
-        print(f"No se pudo actualizar: {e}")
-    finally:
-        conexion.close()
-
-
-def eliminar():
-    """DELETE: borra un alumno por su id."""
-    id_ = input("Id del alumno a eliminar: ").strip()
-    if input(f"Seguro que deseas eliminar el id {id_}? (s/n): ").strip().lower() != "s":
-        print("Cancelado.")
+    if not alumno:
+        print("\n No existe ese alumno\n")
         return
 
-    conexion = conectar()
-    if not conexion:
-        return
-    try:
-        cursor = conexion.cursor()
-        cursor.execute("DELETE FROM alumnos WHERE id = %s", (id_,))
-        conexion.commit()
-        if cursor.rowcount:
-            print("Alumno eliminado.")
-        else:
-            print("No existe un alumno con ese id.")
-    except Error as e:
-        print(f"No se pudo eliminar: {e}")
-    finally:
-        conexion.close()
+    print()
+    for campo, valor in alumno.items():
+        print(f" {campo:<12}: {valor}")
+    print()
 
 
-MENU = """
-===== CRUD DE ALUMNOS =====
-1. Registrar alumno
-2. Mostrar alumnos
-3. Actualizar alumno
-4. Eliminar alumno
-5. Salir
-"""
+def actualizar_alumno(codalu, patalu, matalu, nombre, edad, sexo, direc, dist, correo):
+    cursor.execute(
+        "update alumno set pat_alu=%s, mat_alu=%s, nom_alu=%s, edad_alu=%s, "
+        "sexo_alu=%s, direc_alu=%s, dist_alu=%s, correo_alu=%s "
+        "where cod_alumno=%s",
+        (patalu, matalu, nombre, edad, sexo, direc, dist, correo, codalu)
+    )
+    conexion.commit()
+
+    if cursor.rowcount:
+        print("alumno actualizado.!!")
+    else:
+        print("no existe ese alumno")
 
 
-def main():
-    opciones = {"1": crear, "2": leer, "3": actualizar, "4": eliminar}
+def eliminar_alumno(codalu):
+    cursor.execute("delete from alumno where cod_alumno = %s", (codalu,))
+    conexion.commit()
+
+    if cursor.rowcount:
+        print("alumno eliminado.!!")
+    else:
+        print("no existe ese alumno")
+
+
+# datos que se piden por teclado
+def pedir_datos():
+    patalu = input("Apellido paterno: ").upper()
+    matalu = input("Apellido materno: ").upper()
+    nombre = input("Nombres: ").upper()
+    edad = input("Edad: ")
+    sexo = input("Sexo (M/F): ").upper()
+    direc = input("Direccion: ").upper()
+    dist = input("Distrito: ").upper()
+    correo = input("Correo: ")
+    return patalu, matalu, nombre, edad, sexo, direc, dist, correo
+
+
+# menu principal
+def menu():
     while True:
-        print(MENU)
-        opcion = input("Elige una opcion: ").strip()
-        if opcion == "5":
-            print("Hasta luego.")
+        print("""
+========= CRUD DE ALUMNOS =========
+1. Registrar alumno   (INSERT)
+2. Listar alumnos     (SELECT)
+3. Buscar por codigo  (SELECT)
+4. Actualizar alumno  (UPDATE)
+5. Eliminar alumno    (DELETE)
+6. Salir
+""")
+        opcion = input("Elige una opcion: ")
+
+        if opcion == "1":
+            codalu = input("Codigo (ej. ALU-020): ").upper()
+            crear_alumno(codalu, *pedir_datos())
+
+        elif opcion == "2":
+            leer_alumnos()
+
+        elif opcion == "3":
+            buscar_alumno(input("Codigo del alumno: ").upper())
+
+        elif opcion == "4":
+            codalu = input("Codigo del alumno a modificar: ").upper()
+            print("Ingresa los nuevos datos:")
+            actualizar_alumno(codalu, *pedir_datos())
+
+        elif opcion == "5":
+            codalu = input("Codigo del alumno a eliminar: ").upper()
+            if input(f"Seguro que deseas eliminar a {codalu}? (s/n): ").lower() == "s":
+                eliminar_alumno(codalu)
+            else:
+                print("cancelado")
+
+        elif opcion == "6":
+            cursor.close()
+            conexion.close()
+            print("hasta luego")
             break
-        accion = opciones.get(opcion)
-        if accion:
-            accion()
+
         else:
-            print("Opcion no valida.")
+            print("opcion no valida")
 
 
-if __name__ == "__main__":
-    main()
+menu()

@@ -1,105 +1,122 @@
-# CRUD de Alumnos con Python y MySQL
+# CRUD de Alumnos — Python + MySQL (Curso_Phyton / 00_BD_CRUD)
 
-Guia paso a paso, en el mismo orden de las capturas de pantalla.
+Guia paso a paso, en el mismo orden de las capturas del curso.
 
-## 1. Crear la tabla Alumnos (`01_Tabla_Alumnos`)
+Estructura real del proyecto en tu PC:
 
-Abre MySQL Workbench (o la consola de MySQL) y ejecuta el archivo `alumnos.sql`.
-Crea la base `escuela` y la tabla `alumnos` con: id, matricula, nombre,
-apellido, edad y carrera.
-
-Desde la terminal tambien puedes hacerlo asi:
-
-```powershell
-mysql -u root -p < alumnos.sql
+```
+D:\Curso_Phyton\00_BD_CRUD\
+    Entornos\
+        crudPy\          <- entorno virtual (Include, Lib, Scripts, pyvenv.cfg)
+    crud.py              <- el programa
+    CRUD_MySql.txt
 ```
 
-## 2. Abrir la terminal (`02_Comando`)
+Base de datos: **matricula** · Tabla: **alumno** · Servidor: localhost (phpMyAdmin muestra el puerto 3307)
 
-En Windows: tecla Windows -> escribe `cmd` o `PowerShell` -> Enter.
+---
 
-## 3. Crear las carpetas del proyecto (`03_Creo_carpetas`)
+## 1. Revisar la tabla en phpMyAdmin (`01_Tabla_Alumnos`)
 
-```powershell
-mkdir C:\proyectos\crud_alumnos
-cd C:\proyectos\crud_alumnos
-python -m venv venv
+Abre `http://localhost/phpmyadmin` → base de datos **matricula** → tabla **alumno**.
+
+Columnas: `cod_alumno`, `pat_alu`, `mat_alu`, `nom_alu`, `edad_alu`,
+`sexo_alu`, `direc_alu`, `dist_alu`, `correo_alu`.
+El codigo es texto (ALU-001, ALU-002...), no un numero automatico.
+
+El archivo `alumno.sql` de esta carpeta documenta esa estructura.
+
+## 2. Abrir la consola (`02_Comando`)
+
+```cmd
+cd D:\Curso_Phyton\00_BD_CRUD\Entornos
+python -m venv crudPy
 ```
 
-`venv` es el entorno virtual: una copia aislada de Python solo para este
-proyecto, para no ensuciar la instalacion global.
+`python -m venv crudPy` crea el entorno virtual llamado **crudPy**.
 
-## 4. Activar el entorno virtual (`04_activar`)
+## 3. Verificar las carpetas creadas (`03_Creo_carpetas`)
 
-```powershell
-venv\Scripts\activate
+Dentro de `Entornos\crudPy` deben aparecer: `Include`, `Lib`, `Scripts` y
+`pyvenv.cfg`. Si estan, el entorno se creo bien.
+
+## 4. Activar el entorno (`04_activar`)
+
+```cmd
+cd crudPy
+cd Scripts
+Activate
+cd..
+cd..
+cd..
 ```
 
-Sabes que funciono porque al inicio de la linea aparece `(venv)`.
-
-> Si PowerShell te dice "la ejecucion de scripts esta deshabilitada", corre una
-> sola vez:
-> `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
+Al activarse, el prompt cambia a `(crudPy) D:\Curso_Phyton\00_BD_CRUD>`.
+Los tres `cd..` te devuelven a la carpeta del proyecto.
 
 ## 5. Abrir Visual Studio Code (`05_Ir_visual_studio`)
 
-```powershell
+```cmd
 code .
 ```
 
-Dentro de VS Code: `Ctrl + Shift + P` -> "Python: Select Interpreter" ->
-elige el que dice `venv`.
+Se abre VS Code en `00_BD_CRUD`, con el entorno ya activado.
 
 ## 6. Instalar el conector de MySQL (`06_Instala_mysql`)
 
-Con el entorno activado `(venv)`:
-
-```powershell
+```cmd
 pip install mysql-connector-python
 ```
 
-O bien: `pip install -r requirements.txt`
+Debe terminar en `Successfully installed mysql-connector-python-9.7.0`.
+El aviso de actualizar pip es opcional, se puede ignorar.
 
-## 7. Probar la conexion desde PowerShell (`07_PowerShell`)
+## 7. Permisos de PowerShell (`07_PowerShell`)
 
-Edita `conexion.py` y pon tu contrasena real de MySQL en `CONFIG["password"]`.
-Luego:
+Solo si usas PowerShell (no hace falta en cmd) y te dice que la ejecucion de
+scripts esta deshabilitada. Abre PowerShell **como administrador**:
 
 ```powershell
-python conexion.py
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-Debe imprimir: `Conexion exitosa a la base de datos 'escuela'`.
+Responde `S`. Es de una sola vez.
 
-Si falla, revisa en este orden: que el servicio de MySQL este encendido, que la
-contrasena sea la correcta y que la base `escuela` exista (paso 1).
+## 8. Escribir y ejecutar el CRUD (`08_Crud_py`)
 
-## 8. Ejecutar el CRUD (`08_Crud_py`)
+El archivo `crud.py` de esta carpeta es la version completa: conexion, las
+cuatro operaciones y un menu. Copialo a `D:\Curso_Phyton\00_BD_CRUD\crud.py`.
 
-```powershell
+```cmd
 python crud.py
 ```
 
-Aparece el menu con las cuatro operaciones:
+| Opcion | Operacion | SQL      | Funcion              |
+|--------|-----------|----------|----------------------|
+| 1      | Create    | `INSERT` | `crear_alumno()`     |
+| 2      | Read      | `SELECT` | `leer_alumnos()`     |
+| 3      | Read      | `SELECT` | `buscar_alumno()`    |
+| 4      | Update    | `UPDATE` | `actualizar_alumno()`|
+| 5      | Delete    | `DELETE` | `eliminar_alumno()`  |
 
-| Letra | Operacion | SQL      | Funcion en `crud.py` |
-|-------|-----------|----------|----------------------|
-| C     | Create    | `INSERT` | `crear()`            |
-| R     | Read      | `SELECT` | `leer()`             |
-| U     | Update    | `UPDATE` | `actualizar()`       |
-| D     | Delete    | `DELETE` | `eliminar()`         |
+---
 
-## Archivos
+## Notas sobre tu codigo actual
 
-- `alumnos.sql` — base de datos y tabla.
-- `conexion.py` — datos de conexion a MySQL.
-- `crud.py` — menu y las cuatro operaciones.
-- `requirements.txt` — dependencias.
+- `import pyodbc` no se usa y puede dar error si no esta instalado: quitalo.
+- Los `%s` de `cursor.execute(...)` no son formato de texto de Python, son
+  marcadores del conector. Siempre pasa los valores en la tupla del segundo
+  argumento (asi se evita la inyeccion SQL).
+- Falta `conexion.commit()` despues de cada INSERT, UPDATE y DELETE; sin el,
+  los cambios no se guardan.
 
 ## Errores mas comunes
 
-- `Access denied for user 'root'@'localhost'` — contrasena incorrecta en `conexion.py`.
-- `Unknown database 'escuela'` — falta ejecutar `alumnos.sql`.
-- `ModuleNotFoundError: No module named 'mysql'` — no activaste el `venv` (paso 4)
-  o no instalaste el conector (paso 6).
-- `Can't connect to MySQL server` — el servicio de MySQL esta apagado.
+- `ModuleNotFoundError: No module named 'mysql'` — no activaste el entorno
+  (paso 4) o no instalaste el conector (paso 6).
+- `Can't connect to MySQL server on '127.0.0.1:3306'` — MySQL esta en otro
+  puerto: descomenta `port=3307` en `crud.py`, o enciende MySQL en XAMPP.
+- `Unknown database 'matricula'` — el nombre de la base esta mal escrito.
+- `Access denied for user 'root'@'localhost'` — revisa `password` (en XAMPP
+  normalmente va vacio: `password=""`).
+- `Duplicate entry 'ALU-001' for key 'PRIMARY'` — ese codigo ya existe, usa otro.
