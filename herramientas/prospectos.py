@@ -481,7 +481,9 @@ def armar_fila(e, distrito, grupo):
         "ultima_revision": tags.get("check_date", ""),
         "lat": lat,
         "lon": lon,
-        "maps": f"https://www.google.com/maps/search/?api=1&query={lat},{lon}",
+        "maps": "https://www.google.com/maps/search/?api=1&query=" + quote(
+            f"{nombre} {direccion} {distrito} Lima Peru"),
+        "maps_gps": f"https://www.google.com/maps/search/?api=1&query={lat},{lon}",
         "osm": f"https://www.openstreetmap.org/{e['type']}/{e['id']}",
         "otros_datos": json.dumps(otros, ensure_ascii=False) if otros else "",
     }
