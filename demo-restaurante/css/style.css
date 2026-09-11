@@ -566,6 +566,10 @@ img { max-width: 100%; }
   flex-wrap: wrap;
 }
 
+/* el display:flex de arriba pisa el display:none que el navegador
+   le da al atributo [hidden], asi que hay que declararlo aparte */
+.order-bar[hidden] { display: none; }
+
 .order-summary {
   flex: 1;
   min-width: 0;
