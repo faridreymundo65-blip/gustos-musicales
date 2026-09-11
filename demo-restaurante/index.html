@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mar Bravo — Cevichería en Barranco</title>
+  <meta name="description" content="Cevichería Mar Bravo en Barranco, Lima. Pescado del día, carta completa con precios y pedidos directos por WhatsApp." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%9F%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="demo-bar">
+    Sitio de <strong>demostración</strong> &middot; Mar Bravo es un negocio ficticio creado como ejemplo
+  </div>
+
+  <header class="header">
+    <nav class="navbar">
+      <a href="#inicio" class="logo">Mar&nbsp;Bravo</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#carta">Carta</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#visitanos">Visítanos</a></li>
+        <li><a href="#preguntas">Preguntas</a></li>
+      </ul>
+      <a href="#carta" class="btn btn-primary nav-cta">Pedir ahora</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ---------- HERO ---------- -->
+    <section id="inicio" class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Barranco, Lima</span>
+        </p>
+        <h1>El pescado llega a las 5 a.m. y se acaba el mismo día.</h1>
+        <p class="hero-sub">
+          Compramos en el Terminal Pesquero de Villa María de madrugada y cocinamos solo con lo que
+          entró esa mañana. Si se acabó el lenguado, se acabó — no lo congelamos para mañana.
+        </p>
+        <div class="hero-actions">
+          <a href="#carta" class="btn btn-primary btn-lg">Ver la carta y pedir</a>
+          <a href="#visitanos" class="btn btn-ghost btn-lg">Cómo llegar</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>18</strong><span>años en Barranco</span></div>
+          <div><strong>5 a.m.</strong><span>compra diaria</span></div>
+          <div><strong>4.8</strong><span>en Google · 640 reseñas</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="plate plate-1">
+          <span class="plate-tag">El clásico</span>
+          <span class="plate-name">Ceviche Mar Bravo</span>
+          <span class="plate-notes">Lenguado · Ají limo · Choclo · Camote</span>
+          <span class="plate-price">S/ 42</span>
+        </div>
+        <div class="plate plate-2">
+          <span class="plate-tag">Para compartir</span>
+          <span class="plate-name">Jalea mixta</span>
+          <span class="plate-notes">Chicharrón de pescado · Mariscos · Sarsa</span>
+          <span class="plate-price">S/ 58</span>
+        </div>
+        <div class="plate plate-3">
+          <span class="plate-tag">Sin alcohol</span>
+          <span class="plate-name">Chicha morada de la casa</span>
+          <span class="plate-price">S/ 10</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- FRANJA DE CONFIANZA ---------- -->
+    <section class="strip">
+      <div><span>🛵</span> Delivery en Barranco, Miraflores y Chorrillos</div>
+      <div><span>💳</span> Yape, Plin, tarjeta y efectivo</div>
+      <div><span>🍽️</span> 60 asientos · terraza al malecón</div>
+      <div><span>🅿️</span> Playa de estacionamiento a media cuadra</div>
+    </section>
+
+    <!-- ---------- CARTA ---------- -->
+    <section id="carta" class="section">
+      <div class="section-head">
+        <span class="section-eyebrow">Nuestra carta</span>
+        <h2>Arma tu pedido y te lo mandamos por WhatsApp</h2>
+        <p class="section-sub">
+          Toca el <strong>+</strong> de cada plato. Al terminar, el botón te abre WhatsApp con el
+          pedido ya escrito — no tienes que dictar nada.
+        </p>
+      </div>
+
+      <div class="menu-tabs" id="menuTabs" role="tablist" aria-label="Categorías de la carta"></div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <!-- ---------- NOSOTROS ---------- -->
+    <section id="nosotros" class="section section-alt">
+      <div class="about">
+        <div class="about-text">
+          <span class="section-eyebrow">Nosotros</span>
+          <h2>Empezamos con cuatro mesas en la esquina de Ayacucho.</h2>
+          <p>
+            En 2008 don Aurelio Quispe vendía ceviche en un local de cuatro mesas a media cuadra
+            del puente de los Suspiros. Hoy son sus dos hijas quienes manejan la cocina, con la
+            misma regla que puso él: se compra en la madrugada y se cocina ese día.
+          </p>
+          <p>
+            No tenemos carta congelada ni salsas preparadas de la semana pasada. Si un plato no
+            está, es porque el mar no dio ese día.
+          </p>
+          <ul class="about-points">
+            <li>Pescado comprado cada madrugada en el Terminal de Villa María</li>
+            <li>Leche de tigre preparada al momento del pedido</li>
+            <li>Ají limo y rocoto de proveedores de Arequipa y Tacna</li>
+          </ul>
+        </div>
+        <div class="about-visual" aria-hidden="true">
+          <div class="stat-card"><strong>2008</strong><span>Abrimos con 4 mesas</span></div>
+          <div class="stat-card"><strong>2014</strong><span>Nos mudamos al malecón</span></div>
+          <div class="stat-card"><strong>2019</strong><span>Premio Summum · mención</span></div>
+          <div class="stat-card"><strong>Hoy</strong><span>60 asientos y delivery propio</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- RESEÑAS ---------- -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-eyebrow">Lo que dicen</span>
+        <h2>640 reseñas y un promedio de 4.8</h2>
+      </div>
+      <div class="reviews">
+        <blockquote class="review">
+          <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+          <p>El lenguado estaba fresquísimo y la leche de tigre con el punto justo de ají. Pedí por WhatsApp desde la página y llegó en 35 minutos, bien frío.</p>
+          <cite>Rosa Alvarado · vecina de Barranco</cite>
+        </blockquote>
+        <blockquote class="review">
+          <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+          <p>Fuimos seis y nos atendieron sin reserva un sábado. La jalea alcanza tranquilo para tres. El causa de cangrejo fue la sorpresa de la mesa.</p>
+          <cite>Diego Camacho · San Borja</cite>
+        </blockquote>
+        <blockquote class="review">
+          <div class="stars" aria-label="4 de 5 estrellas">★★★★☆</div>
+          <p>Rico todo, pero llegamos 3 p.m. y ya no había lenguado. Lo avisan en la entrada, así que uno sabe. Volvimos temprano al domingo siguiente.</p>
+          <cite>Melissa Ríos · Surco</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ---------- VISÍTANOS ---------- -->
+    <section id="visitanos" class="section section-alt">
+      <div class="section-head">
+        <span class="section-eyebrow">Visítanos</span>
+        <h2>Estamos a una cuadra del malecón</h2>
+      </div>
+
+      <div class="visit">
+        <div class="visit-info">
+          <div class="info-block">
+            <h3>Dirección</h3>
+            <p>Av. Sáenz Peña 284, Barranco<br />Lima, Perú</p>
+            <a class="link-arrow" href="https://www.google.com/maps/search/?api=1&query=-12.1490,-77.0220" target="_blank" rel="noopener">Abrir en Google Maps →</a>
+          </div>
+
+          <div class="info-block">
+            <h3>Horario</h3>
+            <table class="hours" id="hoursTable"></table>
+            <p class="hours-note">La cocina cierra 30 minutos antes.</p>
+          </div>
+
+          <div class="info-block">
+            <h3>Contacto</h3>
+            <p>
+              WhatsApp y llamadas<br />
+              <a class="link-arrow" href="https://wa.me/51987654321" target="_blank" rel="noopener">+51 987 654 321 →</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="visit-map">
+          <iframe
+            title="Ubicación de Mar Bravo en Barranco"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-77.0270%2C-12.1530%2C-77.0170%2C-12.1450&amp;layer=mapnik&amp;marker=-12.1490%2C-77.0220"
+            loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- FAQ ---------- -->
+    <section id="preguntas" class="section">
+      <div class="section-head">
+        <span class="section-eyebrow">Preguntas frecuentes</span>
+        <h2>Lo que más nos preguntan</h2>
+      </div>
+      <div class="faq-list" id="faqList"></div>
+    </section>
+
+    <!-- ---------- CTA ---------- -->
+    <section class="cta-band">
+      <h2>¿Antojo de ceviche?</h2>
+      <p>Arma tu pedido en la carta y te lo confirmamos por WhatsApp en minutos.</p>
+      <a href="#carta" class="btn btn-light btn-lg">Ir a la carta</a>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo">Mar Bravo</span>
+        <p>Cevichería en Barranco desde 2008. Pescado del día, cocinado el mismo día.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Carta</h4>
+        <a href="#carta">Ceviches</a>
+        <a href="#carta">Platos de fondo</a>
+        <a href="#carta">Bebidas</a>
+      </div>
+      <div class="footer-col">
+        <h4>El local</h4>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#visitanos">Cómo llegar</a>
+        <a href="#preguntas">Preguntas</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <a href="https://wa.me/51987654321" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="#visitanos">Av. Sáenz Peña 284</a>
+      </div>
+    </div>
+    <p class="footer-legal">
+      &copy; <span id="year"></span> Mar Bravo · Sitio de demostración. Negocio, reseñas y datos de contacto ficticios.
+    </p>
+  </footer>
+
+  <!-- ---------- BARRA FLOTANTE DEL PEDIDO ---------- -->
+  <div class="order-bar" id="orderBar" hidden>
+    <button class="order-summary" id="orderSummary" aria-expanded="false">
+      <span class="order-count" id="orderCount">0</span>
+      <span class="order-label">Ver pedido</span>
+      <span class="order-total" id="orderTotal">S/ 0</span>
+    </button>
+    <a class="btn btn-primary order-send" id="orderSend" href="#" target="_blank" rel="noopener">
+      Enviar por WhatsApp
+    </a>
+    <div class="order-detail" id="orderDetail" hidden></div>
+  </div>
+
+  <a class="wa-float" href="https://wa.me/51987654321" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true">
+      <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35z"/>
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23z"/>
+    </svg>
+  </a>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
