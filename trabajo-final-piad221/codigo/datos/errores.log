@@ -1,0 +1,3 @@
+[11/09/2026 23:59:58] leer_decimal -> ValueError con la entrada: ciento ochenta
+[12/09/2026 00:00:04] leer_entero -> ValueError con la entrada: seis
+[12/09/2026 00:00:05] opcion_registrar_venta -> Stock insuficiente: solo quedan 40 unidad(es)
