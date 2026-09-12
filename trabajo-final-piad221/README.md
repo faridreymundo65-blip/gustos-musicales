@@ -13,7 +13,7 @@
 
 | Carpeta / archivo | Descripción |
 |---|---|
-| `codigo/sistema_inventario.py` | **Entregable principal.** Aplicación de consola: 1 538 líneas, 51 funciones documentadas. |
+| `codigo/sistema_inventario.py` | **Entregable principal.** Aplicación de consola: 996 líneas, 51 funciones. |
 | `codigo/datos/` | Archivos de texto generados por el programa (inventario, ventas y bitácora de errores). |
 | `documento/PIAD-221_Trabajo_Final.docx` | Informe completo (72 páginas) para editar y entregar. |
 | `documento/PIAD-221_Trabajo_Final.pdf` | Copia en PDF del informe, lista para imprimir. |
