@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Configuración local de Claude Code (no se comparte)
+.claude/settings.local.json
+.claude/registro-cambios.log
+
+# Secretos: nunca subir claves al repositorio
+.env
+.env.*
+.mcp.json
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel/
+
+# Obsidian (estado local del vault)
+segundo-cerebro/.obsidian/workspace*.json

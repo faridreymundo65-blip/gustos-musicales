@@ -1,0 +1,32 @@
+{
+  "_comentario": [
+    "Plantilla de servidores MCP. Cópiala a .mcp.json y rellena tus datos:",
+    "    cp .mcp.json.example .mcp.json",
+    ".mcp.json está en .gitignore porque puede contener credenciales.",
+    "NUNCA escribas una clave literal aquí: usa ${VARIABLE} y define la",
+    "variable en tu entorno o en un .env que tampoco se sube.",
+    "Borra los servidores que no uses; Claude Code pide aprobación la",
+    "primera vez que arranca cada uno."
+  ],
+  "mcpServers": {
+    "n8n": {
+      "type": "http",
+      "url": "https://TU-INSTANCIA.app.n8n.cloud/mcp/servidor",
+      "headers": {
+        "Authorization": "Bearer ${N8N_API_KEY}"
+      }
+    },
+    "obsidian": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "./segundo-cerebro"
+      ]
+    },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    }
+  }
+}
