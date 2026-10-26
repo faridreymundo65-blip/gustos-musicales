@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizador: del peligro al control</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="page">
+
+  <header class="head">
+    <div>
+      <p class="kicker">Seguridad e higiene industrial · Actividad 3</p>
+      <h1>Del peligro al control</h1>
+      <p class="sub">Organizador gráfico: peligro → riesgo → consecuencia → jerarquía de controles</p>
+    </div>
+    <div class="id">
+      <p><b>Estudiante</b>Farid Felix Reymundo Torre</p>
+      <p><b>Entorno</b>Construcción · Edificio en obra</p>
+    </div>
+  </header>
+
+  <div class="case-bar">
+    <b>Caso:</b> un obrero debe instalar tuberías en el 2.º piso de una obra, trabajando sobre un <b>andamio sin barandas</b> en el borde de la losa, a unos 4 metros del suelo.
+  </div>
+
+  <div class="flow">
+
+    <!-- 1 -->
+    <section class="card k1">
+      <div class="ch"><span class="n">1</span><h2>Peligro</h2></div>
+      <svg viewBox="0 0 220 110" class="sketch" role="img" aria-label="Boceto: obrero sobre un andamio sin barandas en el borde de la losa">
+        <rect width="220" height="110" fill="#eef5fb"/>
+        <rect y="98" width="220" height="12" fill="#cfd8e3"/>
+        <rect x="0" y="40" width="46" height="10" fill="#9fb0c3"/>
+        <rect x="0" y="50" width="30" height="48" fill="#cfd8e3"/>
+        <g stroke="#0b2545" stroke-width="3" stroke-linecap="round">
+          <path d="M60 98V58M150 98V58"/>
+          <path d="M60 98l45-40M105 98l45-40" stroke-width="1.6" opacity=".45"/>
+          <path d="M52 56h108" stroke-width="5"/>
+        </g>
+        <g stroke="#0b2545" stroke-width="3.2" stroke-linecap="round" fill="none">
+          <circle cx="140" cy="22" r="5.5" fill="#0b2545"/>
+          <path d="M140 28v14M140 42l-6 13M140 42l6 13M140 31l-8 7M140 31l8 6"/>
+        </g>
+        <path d="M148 18c26 2 38 24 36 62" fill="none" stroke="#ff6b4a" stroke-width="2.4" stroke-dasharray="4 4" stroke-linecap="round"/>
+        <path d="M178 74l6 9 6-9" fill="none" stroke="#ff6b4a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M156 56v-16m0 0 4 3m-4-3-4 3" stroke="#ff6b4a" stroke-width="0"/>
+        <text x="58" y="20" font-size="9" fill="#ff6b4a" font-weight="700" font-family="Arial">SIN BARANDAS</text>
+        <text x="58" y="31" font-size="8" fill="#5b6b7f" font-family="Arial">≈ 4 m de altura</text>
+        <text x="164" y="104" font-size="8" fill="#5b6b7f" font-family="Arial">caída</text>
+      </svg>
+      <p class="lbl">Peligro identificado</p>
+      <p class="big">Andamio sin barandas ni rodapié en el borde de la losa</p>
+      <p class="lbl">¿Qué tipo de peligro es?</p>
+      <ul class="chips">
+        <li>Sustancia</li><li>Acto</li><li class="on">Condición ✔</li><li>Fuente</li>
+      </ul>
+      <p class="note"><b>Es una condición:</b> el andamio está en un estado inseguro aunque nadie lo use. No es una sustancia, ni una acción del obrero, ni una fuente de energía.</p>
+    </section>
+
+    <!-- 2 -->
+    <section class="card k2">
+      <div class="ch"><span class="n">2</span><h2>Riesgo</h2><em>Probabilidad × Severidad</em></div>
+      <table class="matrix" aria-label="Matriz de riesgo">
+        <thead><tr><th class="corner">Severidad ↓<br>Prob. →</th><th>Baja</th><th>Media</th><th>Alta</th></tr></thead>
+        <tbody>
+          <tr><th>Fatal</th><td class="r3 res">Medio<small>después del control</small></td><td class="r6 now">ALTO<small>● este caso</small></td><td class="r9">Crítico</td></tr>
+          <tr><th>Grave</th><td class="r2">Bajo</td><td class="r4">Medio</td><td class="r6">Alto</td></tr>
+          <tr><th>Leve</th><td class="r1">Bajo</td><td class="r2">Bajo</td><td class="r3">Medio</td></tr>
+        </tbody>
+      </table>
+      <p class="pt"><b>Probabilidad: MEDIA.</b> Se sube varias veces al día, pero no siempre se trabaja pegado al borde.</p>
+      <p class="pt"><b>Severidad: FATAL.</b> Una caída de 4 m sobre piso duro puede causar la muerte.</p>
+      <p class="verdict">Media × Fatal = <b>riesgo ALTO</b>: no se debe trabajar hasta controlarlo.</p>
+    </section>
+
+    <!-- 3 -->
+    <section class="card k3">
+      <div class="ch"><span class="n">3</span><h2>Consecuencia</h2><em>Si el riesgo se vuelve daño</em></div>
+      <div class="cons"><span class="chip c-f">Física</span>
+        <p>Fracturas, traumatismo craneoencefálico, lesión de columna o muerte del obrero.</p></div>
+      <div class="cons"><span class="chip c-m">Material</span>
+        <p>Caída de herramientas y tuberías sobre quienes están abajo, daño del andamio y retraso del avance de obra.</p></div>
+      <div class="cons"><span class="chip c-i">Institucional</span>
+        <p>Paralización de la obra, multas e indemnización por incumplir la Ley 29783 (SST), y pérdida de prestigio de la empresa constructora.</p></div>
+      <p class="recap"><b>Recuerda:</b> el peligro es la condición; el riesgo, qué tan probable y grave sería; el daño, lo que ya ocurrió.</p>
+    </section>
+
+    <!-- 4 -->
+    <section class="card k4">
+      <div class="ch"><span class="n">4</span><h2>Jerarquía de controles</h2></div>
+      <ol class="pyr">
+        <li class="p1 use"><span class="b">Eliminación</span><p>Prefabricar las tuberías en el piso para reducir el trabajo en altura.</p></li>
+        <li class="p2"><span class="b">Sustitución</span><p>Cambiar el andamio por una plataforma elevadora tipo tijera.</p></li>
+        <li class="p3 use"><span class="b">Ingeniería</span><p><b>Barandas rígidas</b> (pasamanos a 1 m, barra intermedia y rodapié), plataforma completa y base arriostrada.</p></li>
+        <li class="p4 use"><span class="b">Administrativo</span><p><b>Permiso de trabajo en altura</b>, inspección diaria con tarjeta verde/roja por persona competente y capacitación.</p></li>
+        <li class="p5"><span class="b">EPP</span><p>Arnés con línea de vida anclada, solo como última barrera.</p></li>
+      </ol>
+      <p class="key"><span></span> Controles propuestos · de más a menos efectivo ↓</p>
+      <p class="resid"><b>Riesgo residual:</b> con las barandas y el permiso, la probabilidad baja a Baja. Queda <b>Baja × Fatal = riesgo Medio</b>, bajo seguimiento.</p>
+    </section>
+
+  </div>
+
+  <footer class="foot">
+    <span>Actividad 3 · Organizador gráfico · Entrega individual</span>
+    <span>Farid Felix Reymundo Torre</span>
+  </footer>
+</main>
+</body>
+</html>
